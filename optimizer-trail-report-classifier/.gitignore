@@ -1,0 +1,8 @@
+.env
+.venv/
+uv.lock
+__pycache__/
+.pytest_cache/
+*.pyc
+# Hand-off file written by `optimize`, read by `publish`
+.state/
