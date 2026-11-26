@@ -63,6 +63,8 @@ usage; the other spans are type `general`.
    `PHARMACY_PORT=5581 java -jar target/quarkus-app/quarkus-run.jar`, then
    `curl --get --data-urlencode "q=Can I take Corvadol with Thinnex?" http://localhost:5581/ask`.
    Spans are exported in batches every five seconds, and the rest flush when the service stops.
+5. Offline tests: `mvn test`. They exercise the leaflet chunker with plain JUnit, with no Quarkus boot, no
+   `OPENAI_API_KEY` and nothing sent to Opik.
 
 ## Poke around
 
@@ -115,6 +117,7 @@ you point Quarkus at a different provider, check the span shows a provider befor
 - `.../KnowledgeBase.java`: reads `docs/`, splits by section, embeds and searches; startup indexing runs in an `index_leaflets` span.
 - `.../FaqService.java`: retrieve then answer, with the `retrieve_leaflets` span.
 - `.../FaqResource.java`: the `/ask` endpoint; stamps question and answer on the trace root.
+- `src/test/java/.../KnowledgeBaseSplitTest.java`: offline JUnit tests for the section chunker, including every shipped leaflet.
 - `docs/`: the fictional leaflets. `questions.txt`: the scripted questions. `run.sh`: build, boot, ask, stop.
 - No tests: this example is Java and ships none; `mvn -q package` must pass.
 
