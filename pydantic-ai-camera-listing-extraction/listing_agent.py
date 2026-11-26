@@ -6,9 +6,16 @@ from typing import Any
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+from openai import AsyncOpenAI
 from pydantic_ai import Agent
+from pydantic_ai.models.openai import OpenAIChatModel
+from pydantic_ai.providers.openai import OpenAIProvider
 
-MODEL = "openai:gpt-4o-mini"
+import opik
+from tracing import PROJECT_NAME, setup_tracing
+
+MODEL_NAME = "gpt-4o-mini"
+MODEL = f"openai:{MODEL_NAME}"
 DATA_FILE = Path(__file__).parent / "data" / "posts.json"
 
 # Keys come from the repo-root .env (walk up from this folder) or a local .env.
@@ -16,6 +23,10 @@ for parent in Path(__file__).resolve().parents:
     if (parent / ".env").exists():
         load_dotenv(parent / ".env")
         break
+
+
+# Must run before the agent makes its first call so the OTLP exporter is configured.
+setup_tracing()
 
 
 class CameraListing(BaseModel):
@@ -36,7 +47,7 @@ SYSTEM_PROMPT = (
     "the post states. If a field is not in the post, return null (an empty list "
     "for accessories). Never guess a brand, model, mount, price or count, and do "
     "not convert currencies. Use the check_mount tool to normalise a mount name "
-    "when the post names one."
+    "when the post names one, then copy the mount into the listing as the post wrote it."
 )
 
 KNOWN_MOUNTS = {"m39", "k bayonet", "pl", "bayonet", "m42", "f mount"}
@@ -51,9 +62,15 @@ def check_mount(name: str) -> str:
     return f"{name!r} is {'a recognised' if known else 'not a recognised'} mount name"
 
 
+# track opens the trace for this extraction (general span; the tracked function's input and
+# output show on it). The Pydantic AI spans nest beneath it via OpikSpanProcessor.
+@opik.track(project_name=PROJECT_NAME)
 def extract_listing(text: str) -> dict[str, Any]:
     """One extraction: post text in, listing dict out."""
-    return agent.run_sync(text).output.model_dump()
+    # A fresh client per call: run_sync uses one event loop per thread, and a shared
+    # cached HTTP client breaks with "bound to a different event loop" under run_tests' workers.
+    model = OpenAIChatModel(MODEL_NAME, provider=OpenAIProvider(openai_client=AsyncOpenAI()))
+    return agent.run_sync(text, model=model).output.model_dump()
 
 
 def load_posts() -> list[dict[str, Any]]:

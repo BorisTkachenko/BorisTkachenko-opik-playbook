@@ -5,9 +5,14 @@ description = "Pydantic AI agent that turns messy vintage-camera marketplace pos
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "logfire>=6.0.1",
+    "opik>=2.3.4",
     "pydantic-ai-slim[openai]>=1.0",
     "python-dotenv>=1.0",
 ]
 
 [dependency-groups]
 dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
