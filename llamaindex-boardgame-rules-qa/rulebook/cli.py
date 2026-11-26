@@ -2,6 +2,7 @@
 
 import argparse
 
+from rulebook import tracing
 from rulebook.config import load_env
 
 DEMO_QUESTIONS = [
@@ -23,10 +24,12 @@ def cmd_ask(args) -> None:
     from rulebook.index.build import load_index
     from rulebook.qa.engine import ask, make_engine
 
+    tracing.enable_tracing()
     engine = make_engine(load_index())
     for question in ([args.question] if args.question else DEMO_QUESTIONS):
         result = ask(engine, question)
         print(f"Q: {question}\nA: {result['answer']}\n")
+    tracing.flush()
 
 
 def cmd_suite(_args) -> None:
