@@ -1,0 +1,26 @@
+{
+  "train": [
+    {"claim": "Veyra is a binary star system.", "label": "SUPPORTED", "evidence": "F-01"},
+    {"claim": "A year on Brume lasts 143 days.", "label": "SUPPORTED", "evidence": "F-05"},
+    {"claim": "Calix has 9 known moons.", "label": "SUPPORTED", "evidence": "F-06"},
+    {"claim": "Ansel has two moons.", "label": "REFUTED", "evidence": "F-06"},
+    {"claim": "Veyra B orbits Veyra A every 16 years.", "label": "REFUTED", "evidence": "F-03"},
+    {"claim": "The Marrow Ridge Observatory discovered Dorrin in 2021.", "label": "REFUTED", "evidence": "F-07"},
+    {"claim": "Brume's atmosphere contains water vapour.", "label": "NOT_ENOUGH_INFO", "evidence": "NONE"},
+    {"claim": "Veyra A is more than five billion years old.", "label": "NOT_ENOUGH_INFO", "evidence": "NONE"}
+  ],
+  "test": [
+    {"claim": "The Pellam telescope has a 2.4-metre mirror.", "label": "SUPPORTED", "evidence": "F-08"},
+    {"claim": "Veyra A is a K-type star.", "label": "SUPPORTED", "evidence": "F-02"},
+    {"claim": "Ansel orbits Veyra A in under a week.", "label": "SUPPORTED", "evidence": "F-09"},
+    {"claim": "Veyra B has no known planets.", "label": "SUPPORTED", "evidence": "F-13"},
+    {"claim": "Veyra is 312 light-years from Earth.", "label": "REFUTED", "evidence": "F-01"},
+    {"claim": "Brume's atmosphere contains oxygen.", "label": "REFUTED", "evidence": "F-10"},
+    {"claim": "Ilse Okonkwo-Hart was appointed director in 2018.", "label": "REFUTED", "evidence": "F-12"},
+    {"claim": "Veyra A is a variable star.", "label": "REFUTED", "evidence": "F-14"},
+    {"claim": "Dorrin has a rocky surface.", "label": "NOT_ENOUGH_INFO", "evidence": "NONE"},
+    {"claim": "The Pellam telescope cost 40 million euros to build.", "label": "NOT_ENOUGH_INFO", "evidence": "NONE"},
+    {"claim": "Calix has a ring system.", "label": "NOT_ENOUGH_INFO", "evidence": "NONE"},
+    {"claim": "Veyra A rotates once every 33 days.", "label": "NOT_ENOUGH_INFO", "evidence": "NONE"}
+  ]
+}

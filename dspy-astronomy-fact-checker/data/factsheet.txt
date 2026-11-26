@@ -1,0 +1,16 @@
+Veyra system fact sheet (Marrow Ridge Observatory, internal edition)
+
+[F-01] Veyra is a binary star system 212 light-years from Earth, in the constellation Lanternfish.
+[F-02] Veyra A is an orange K-type star with a mass of 0.82 solar masses.
+[F-03] Veyra B is a red dwarf that orbits Veyra A once every 61 years.
+[F-04] Veyra A has four confirmed planets: Ansel, Brume, Calix and Dorrin.
+[F-05] Brume is the only planet in the habitable zone; its year lasts 143 days.
+[F-06] Calix is a gas giant with 9 known moons. Ansel and Dorrin have no moons.
+[F-07] Dorrin was discovered in 2019 by the Marrow Ridge Observatory using transit photometry.
+[F-08] The Marrow Ridge Observatory sits at 3,480 metres elevation and operates the 2.4-metre Pellam telescope.
+[F-09] Ansel is the planet closest to Veyra A and completes an orbit in 6 days.
+[F-10] Brume's atmosphere contains methane and carbon dioxide; no oxygen has been detected.
+[F-11] The Pellam telescope saw first light on 14 March 2011.
+[F-12] The observatory's director is Ilse Okonkwo-Hart, appointed in 2022.
+[F-13] Veyra B has no known planets.
+[F-14] The Lanternfish Survey catalogued 1,206 variable stars; Veyra A is not variable.
