@@ -4,6 +4,9 @@ services:
     container_name: langflow-gym-assistant
     ports:
       - "${LANGFLOW_PORT:-7860}:7860"
+    extra_hosts:
+      # lets the container reach a self-hosted Opik running on the host machine
+      - "host.docker.internal:host-gateway"
     environment:
       # Single-user local demo: log in automatically, no sign-up screen.
       LANGFLOW_AUTO_LOGIN: "true"
@@ -12,6 +15,16 @@ services:
       # OPENAI_API_KEY by name instead of storing the key in the flow.
       OPENAI_API_KEY: "${OPENAI_API_KEY}"
       LANGFLOW_VARIABLES_TO_GET_FROM_ENVIRONMENT: "OPENAI_API_KEY"
+
+      # --- Opik: Langflow's built-in tracer ---------------------------------
+      # When OPIK_URL_OVERRIDE (or OPIK_API_KEY) is set, Langflow sends every flow
+      # run to Opik as a trace, with a span per component. setup.sh fills in the
+      # URL as the container sees it. OPIK_API_KEY is only needed for Opik Cloud.
+      OPIK_URL_OVERRIDE: "${OPIK_URL_FOR_CONTAINER}"
+      OPIK_WORKSPACE: "${OPIK_WORKSPACE:-default}"
+      OPIK_API_KEY: "${OPIK_API_KEY:-}"
+      # Langflow's tracers read the project name from LANGCHAIN_PROJECT (default "Langflow").
+      LANGCHAIN_PROJECT: "langflow-gym-assistant"
     volumes:
       - langflow_data:/app/langflow
 
