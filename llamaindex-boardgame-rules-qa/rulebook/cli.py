@@ -33,7 +33,27 @@ def cmd_ask(args) -> None:
 
 
 def cmd_suite(_args) -> None:
-    raise SystemExit("The rule-level suite arrives with the evaluation layer.")
+    from rulebook.index.build import load_index
+    from rulebook.qa.engine import make_engine
+    from rulebook.suite.run import run_suite
+
+    tracing.enable_tracing()
+    result = run_suite(make_engine(load_index()))
+    print(f"\nPass rate: {result.pass_rate:.0%} ({result.items_passed}/{result.items_total} items passed)")
+    for item_result in result.item_results.values():
+        runs = item_result.test_results
+        out = runs[0].test_case.task_output
+        status = "PASS" if item_result.passed else "FAIL"
+        cites = sum(r.test_case.task_output["output"]["citation_ok"] for r in runs)
+        print(f"  [{status}] {out['input']['question']}  (citation ok in {cites}/{len(runs)} runs)")
+        if not item_result.passed:
+            for run in runs:
+                for score in run.score_results:
+                    if score.scoring_failed or score.value != 1:
+                        print(f"         failed: {score.name} - {score.reason}")
+    if result.experiment_url:
+        print(f"\nView the run: {result.experiment_url}")
+    tracing.flush()
 
 
 def main() -> None:
