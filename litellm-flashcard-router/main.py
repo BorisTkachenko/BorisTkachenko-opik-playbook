@@ -7,7 +7,6 @@ model; the script prints one comparison table (cards, tokens, cost, latency).
 import json
 import logging
 import os
-import statistics
 import time
 import warnings
 from pathlib import Path
@@ -33,6 +32,7 @@ from litellm.integrations.opik.opik import OpikLogger  # noqa: E402
 from opik import opik_context  # noqa: E402
 
 from flashcards import build_messages, parse_card  # noqa: E402
+from report import format_table, summarize  # noqa: E402
 
 # OpikLogger is LiteLLM's callback: every litellm.completion() becomes an llm span
 # carrying model, provider, token usage and cost, for both OpenAI and Anthropic.
@@ -69,35 +69,18 @@ def make_card(model: str, entry: dict) -> dict:
         }},
     )
     latency = time.perf_counter() - start
+    card = parse_card(response.choices[0].message.content or "")
+    # A 0/1 feedback score on the trace: invalid JSON shows up as a column you can sort and filter on.
+    opik_context.update_current_trace(
+        feedback_scores=[{"name": "valid_card", "value": 1.0 if card else 0.0}]
+    )
     return {
         "word": entry["word"],
-        "card": parse_card(response.choices[0].message.content or ""),
+        "card": card,
         "latency": latency,
         "cost": response._hidden_params.get("response_cost") or 0.0,
         "tokens": response.usage.total_tokens,
     }
-
-
-def summarize(results: dict[str, list[dict]]) -> list[dict]:
-    """Collapse per-call results into one row per model."""
-    rows = []
-    for model, runs in results.items():
-        rows.append({
-            "model": model.split("/")[-1],
-            "cards": f"{sum(r['card'] is not None for r in runs)}/{len(runs)}",
-            "tokens": sum(r["tokens"] for r in runs),
-            "cost": sum(r["cost"] for r in runs),
-            "mean_latency": statistics.mean(r["latency"] for r in runs),
-        })
-    return rows
-
-
-def print_table(rows: list[dict]) -> None:
-    print(f"\n{'Model':<30} {'Valid cards':>11} {'Tokens':>7} {'Total cost':>11} {'Mean latency':>13}")
-    print("-" * 76)
-    for r in rows:
-        print(f"{r['model']:<30} {r['cards']:>11} {r['tokens']:>7} "
-              f"${r['cost']:>10.6f} {r['mean_latency']:>12.2f}s")
 
 
 def main() -> None:
@@ -110,7 +93,7 @@ def main() -> None:
             results[model].append(run)
             card = run["card"]
             print(f"  {entry['word']:<13} {card['back'] if card else 'INVALID JSON'}")
-    print_table(summarize(results))
+    print("\n" + format_table(summarize(results)))
     # Spans are sent from a background thread; flush so a short script does not exit before they arrive.
     opik.flush_tracker()
 
