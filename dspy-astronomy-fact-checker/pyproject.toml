@@ -5,5 +5,6 @@ description = "A DSPy claim checker over a fictional astronomy fact sheet: uncom
 requires-python = ">=3.12"
 dependencies = [
     "dspy>=3.0",
+    "opik==2.3.4",
     "python-dotenv>=1.0",
 ]
