@@ -20,12 +20,17 @@ async function main(): Promise<void> {
   }
   requireKey("OPENAI_API_KEY");
 
+  // Start tracing before BeeAI is imported so the instrumentation can patch it.
+  const { shutdownTracing, OPIK_PROJECT } = await import("./telemetry/index.ts");
   const { triageProposal } = await import("./agent/triage.ts");
   const ids = command === "demo" ? DEMO_IDS : [arg ?? ""];
   for (const id of ids) {
     console.log(`\n=== ${id} ===`);
     console.log(await triageProposal(id));
   }
+  // Flush so the final spans reach Opik before the process exits.
+  await shutdownTracing();
+  console.log(`\nDone. Open the "${OPIK_PROJECT}" project in Opik to see the traces.`);
 }
 
 await main();
