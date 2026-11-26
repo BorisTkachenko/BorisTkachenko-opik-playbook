@@ -1,0 +1,25 @@
+{
+  "customer": { "id": "CUST-3318", "name": "Ines Valadares" },
+  "accounts": [
+    { "id": "CHK-7741", "type": "checking", "currency": "USD", "balance": 2314.58 },
+    { "id": "SAV-1209", "type": "savings", "currency": "USD", "balance": 12840.0 }
+  ],
+  "cards": [
+    { "id": "CARD-4417", "account_id": "CHK-7741", "network": "Visa", "last4": "4417", "status": "active" },
+    { "id": "CARD-9082", "account_id": "SAV-1209", "network": "Mastercard", "last4": "9082", "status": "active" }
+  ],
+  "transactions": [
+    { "id": "T-001", "account_id": "CHK-7741", "date": "2026-11-02", "merchant": "Harbor Street Grocers", "category": "groceries", "amount": -86.40 },
+    { "id": "T-002", "account_id": "CHK-7741", "date": "2026-11-03", "merchant": "Northwind Payroll", "category": "income", "amount": 3200.0 },
+    { "id": "T-003", "account_id": "CHK-7741", "date": "2026-11-05", "merchant": "Lumen Power & Gas", "category": "utilities", "amount": -112.75 },
+    { "id": "T-004", "account_id": "CHK-7741", "date": "2026-11-07", "merchant": "Bluebird Coffee", "category": "dining", "amount": -6.50 },
+    { "id": "T-005", "account_id": "CHK-7741", "date": "2026-11-09", "merchant": "Transit Pass Authority", "category": "transport", "amount": -64.0 },
+    { "id": "T-006", "account_id": "CHK-7741", "date": "2026-11-11", "merchant": "Kestrel Electronics", "category": "shopping", "amount": -249.99 },
+    { "id": "T-007", "account_id": "CHK-7741", "date": "2026-11-12", "merchant": "Bluebird Coffee", "category": "dining", "amount": -7.25 },
+    { "id": "T-008", "account_id": "CHK-7741", "date": "2026-11-14", "merchant": "Harbor Street Grocers", "category": "groceries", "amount": -131.18 },
+    { "id": "T-009", "account_id": "CHK-7741", "date": "2026-11-15", "merchant": "Pinecone Streaming", "category": "entertainment", "amount": -15.99 },
+    { "id": "T-010", "account_id": "CHK-7741", "date": "2026-11-18", "merchant": "Marlow Hardware", "category": "shopping", "amount": -42.30 },
+    { "id": "T-011", "account_id": "SAV-1209", "date": "2026-11-03", "merchant": "Transfer from CHK-7741", "category": "transfer", "amount": 500.0 },
+    { "id": "T-012", "account_id": "SAV-1209", "date": "2026-11-15", "merchant": "Interest", "category": "income", "amount": 21.40 }
+  ]
+}
