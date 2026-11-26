@@ -1,0 +1,19 @@
+Burnt Toast & Backroads, episode 41: "The Sourdough Server Rack".
+
+[00:00] NELL: Welcome back to Burnt Toast & Backroads, the show about people who build odd things in sheds. I'm Nell Varga.
+[00:12] OSCAR: And I'm Oscar Brandt. Today's guest is Priya Ranganathan, who runs a small bakery in Tartu and, somehow, also a four-node server rack.
+[00:25] PRIYA: Thanks for having me. The rack is bolted to the wall above the proofing cabinet. It's warm up there, which is why it started: the heat from the old servers keeps the dough happy.
+[00:41] NELL: So the servers came first, the bread second?
+[00:45] PRIYA: Reverse, actually. I bought four secondhand machines to run the bakery's ordering site. Then I noticed the shelf above the ovens held a steady twenty-eight degrees, which is exactly where a sourdough starter wants to live.
+[01:08] OSCAR: And the sensors?
+[01:10] PRIYA: Each node reports its inlet temperature every minute. If the shelf drifts below twenty-six, a little script nudges a space heater on. Above thirty, it opens a vent. The starter is named Gerald, by the way.
+[01:34] NELL: Of course it is.
+[01:37] PRIYA: Gerald has survived two power cuts and one firmware update. The firmware update was worse.
+[01:52] OSCAR: What's the loaf like? Does it taste like computers?
+[01:56] PRIYA: It tastes like a slightly more sour country loaf. Customers say it has "character". I've stopped explaining.
+[02:10] NELL: Okay, practical advice. Someone listening wants to do this. What do they need to know?
+[02:16] PRIYA: Three things. One: keep the starter in a sealed jar, because fan dust is real. Two: log the temperature, not just the alarms, because you'll want the curve when something goes odd. Three: never put the heat-sensitive node at the top. We lost a drive that way.
+[02:48] OSCAR: Where can people buy the bread?
+[02:51] PRIYA: Saturdays at the Tartu market, stall nineteen, or order through the site, which, yes, runs on the rack.
+[03:05] NELL: Priya Ranganathan, thank you. Next week: Oscar tries to teach a parrot to read a barometer.
+[03:14] OSCAR: It will not go well. Thanks for listening.
