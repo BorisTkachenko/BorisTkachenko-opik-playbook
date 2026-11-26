@@ -1,0 +1,27 @@
+[project]
+name = "openai-vision-nutrition-labels"
+version = "0.1.0"
+description = "Typed nutrition-facts extraction from label images with OpenAI vision, label PNGs attached to Opik traces and an Opik test suite with honest failures"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=2.0.0",
+    "opik>=2.2.89",
+    "pillow>=11.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+nutrilabel = "nutrilabel.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nutrilabel"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
