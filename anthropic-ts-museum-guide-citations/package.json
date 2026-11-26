@@ -6,6 +6,7 @@
   "description": "A museum audio guide that must quote its exhibit notes verbatim",
   "scripts": {
     "demo": "tsx src/main.ts",
+    "suite": "tsx src/evaluate.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
