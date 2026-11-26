@@ -5,5 +5,6 @@ description = "Same flashcard workload, two LiteLLM providers, one cost and late
 requires-python = ">=3.12"
 dependencies = [
     "litellm>=1.79",
+    "opik>=2.3.4",
     "python-dotenv>=1.2.3",
 ]
