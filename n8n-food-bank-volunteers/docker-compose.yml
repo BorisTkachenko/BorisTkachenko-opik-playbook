@@ -1,0 +1,28 @@
+services:
+  n8n:
+    build: .
+    container_name: n8n-food-bank-volunteers
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    extra_hosts:
+      # lets the container reach a self-hosted Opik running on the host machine
+      - "host.docker.internal:host-gateway"
+    environment:
+      # --- Opik over OpenTelemetry ---------------------------------------
+      # setup.sh fills these in. The endpoint is Opik's OTLP receiver; the
+      # headers pick the workspace and the project ("projectName") the traces
+      # land in. Authorization is only added for Opik Cloud.
+      OTEL_EXPORTER_OTLP_ENDPOINT: "${OTLP_ENDPOINT}"
+      OTEL_EXPORTER_OTLP_HEADERS: "${OTLP_HEADERS}"
+      N8N_OTEL_SERVICE_NAME: "n8n-food-bank-volunteers"
+
+      # --- ordinary n8n settings for a localhost demo --------------------
+      N8N_SECURE_COOKIE: "false"
+      N8N_RUNNERS_ENABLED: "true"
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:

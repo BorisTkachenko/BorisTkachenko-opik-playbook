@@ -1,0 +1,163 @@
+{
+  "name": "Volunteer screening",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "id": "6c1f0d2a-71b4-4f0e-9a51-0a1b2c3d0001",
+      "name": "Sign-up form",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 100],
+      "webhookId": "3e8d6f42-9c1a-4b7e-8d20-0a1b2c3d0002",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "volunteer-signup",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "6c1f0d2a-71b4-4f0e-9a51-0a1b2c3d0003",
+      "name": "Screen volunteer (gpt-4o-mini)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [240, 100],
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You screen volunteer sign-ups for the Riverside Community Pantry, a food bank. Roles and their rules:\n- warehouse_sorting: anyone 16 or older; under-18s need a guardian's consent noted on the form.\n- delivery_driver: must be 21 or older AND say they hold a valid driver's licence.\n- distribution_desk: anyone 18 or older; Spanish speakers are especially welcome.\n- kids_snack_program: 18 or older AND willing to complete a background check.\nShifts run Tuesday and Thursday evenings (5-8pm) and Saturday mornings (8am-noon).\nDecide one of: approve (a role fits, the rules are met, and their availability overlaps a shift), follow_up (promising, but a rule or the availability is unclear and one question would settle it), not_a_fit (no role can fit, e.g. too young for every role or no overlap with any shift). Never invent facts the applicant did not state.\nReply with a JSON object with exactly these keys: decision (\"approve\", \"follow_up\" or \"not_a_fit\"), role (one of the role ids above, or null), shift (the best matching shift, or null), reason (one sentence), follow_up_question (one question for the volunteer coordinator to ask, or null)."
+            },
+            {
+              "role": "user",
+              "content": "=Name: {{ $json.body.name }}\nAge: {{ $json.body.age }}\nEmail: {{ $json.body.email }}\nAvailability: {{ $json.body.availability }}\nInterested in: {{ $json.body.interests }}\nNotes: {{ $json.body.notes }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "__OPENAI_CREDENTIAL_ID__",
+          "name": "OpenAI (volunteer screening)"
+        }
+      }
+    },
+    {
+      "id": "6c1f0d2a-71b4-4f0e-9a51-0a1b2c3d0004",
+      "name": "Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [480, 100],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.message.content.decision }}",
+              "rightValue": "approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6c1f0d2a-71b4-4f0e-9a51-0a1b2c3d0005",
+      "name": "Welcome note",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [720, 0],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            { "id": "w1", "name": "volunteer", "type": "string", "value": "={{ $('Sign-up form').item.json.body.name }}" },
+            { "id": "w2", "name": "decision", "type": "string", "value": "approve" },
+            { "id": "w3", "name": "role", "type": "string", "value": "={{ $json.message.content.role }}" },
+            { "id": "w4", "name": "shift", "type": "string", "value": "={{ $json.message.content.shift }}" },
+            { "id": "w5", "name": "reason", "type": "string", "value": "={{ $json.message.content.reason }}" },
+            { "id": "w6", "name": "next_step", "type": "string", "value": "Send the welcome email with the orientation date." }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6c1f0d2a-71b4-4f0e-9a51-0a1b2c3d0006",
+      "name": "Coordinator follow-up",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [720, 200],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            { "id": "f1", "name": "volunteer", "type": "string", "value": "={{ $('Sign-up form').item.json.body.name }}" },
+            { "id": "f2", "name": "decision", "type": "string", "value": "={{ $json.message.content.decision }}" },
+            { "id": "f3", "name": "role", "type": "string", "value": "={{ $json.message.content.role }}" },
+            { "id": "f4", "name": "reason", "type": "string", "value": "={{ $json.message.content.reason }}" },
+            { "id": "f5", "name": "follow_up_question", "type": "string", "value": "={{ $json.message.content.follow_up_question }}" },
+            { "id": "f6", "name": "next_step", "type": "string", "value": "Volunteer coordinator reviews this sign-up by hand." }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6c1f0d2a-71b4-4f0e-9a51-0a1b2c3d0007",
+      "name": "Reply to form",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [960, 100],
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Sign-up form": {
+      "main": [[{ "node": "Screen volunteer (gpt-4o-mini)", "type": "main", "index": 0 }]]
+    },
+    "Screen volunteer (gpt-4o-mini)": {
+      "main": [[{ "node": "Approved?", "type": "main", "index": 0 }]]
+    },
+    "Approved?": {
+      "main": [
+        [{ "node": "Welcome note", "type": "main", "index": 0 }],
+        [{ "node": "Coordinator follow-up", "type": "main", "index": 0 }]
+      ]
+    },
+    "Welcome note": {
+      "main": [[{ "node": "Reply to form", "type": "main", "index": 0 }]]
+    },
+    "Coordinator follow-up": {
+      "main": [[{ "node": "Reply to form", "type": "main", "index": 0 }]]
+    }
+  }
+}
