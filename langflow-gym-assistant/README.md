@@ -53,6 +53,7 @@ You need Docker, `python3`, an OpenAI key and an Opik. For a self-hosted Opik on
 2. `./setup.sh` starts Langflow on `localhost:7860` and creates the flow.
 3. `./demo.sh` plays the three conversations and prints every answer.
 4. Optional: `uv run --with opik python check_opik.py` prints the same summary as above, read back from Opik.
+5. Offline tests: `python3 -m unittest discover -s tests -v`. They need no Langflow, no key and no Opik (standard library only).
 
 To stop: `docker compose down` (`-v` also deletes the flows and chat history).
 
@@ -78,6 +79,7 @@ To stop: `docker compose down` (`-v` also deletes the flows and chat history).
 - `setup.py`: builds the flow from the Memory Chatbot starter over Langflow's REST API (standard library only).
 - `demo.sh` / `demo.py`: play `data/conversations.json` through `/api/v1/run`, one `session_id` per member.
 - `check_opik.py`: reads the traces back from Opik and summarises threads, spans and cost.
+- `tests/test_offline.py`: offline checks of the prompt builder (only `{context}` and `{user_message}` are templated), the run-response parser, the conversation data and the tracer patch target.
 - `data/gym-facts.md`: the fictional gym's plans, hours, class schedule and rules.
 
 ---
