@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+uv.lock
+# index built by `ingest`; regenerated on every demo run
+.index/
