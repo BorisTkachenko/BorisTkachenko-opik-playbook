@@ -27,7 +27,8 @@ are one click away from the answer.
   the windiest station-day, total rainfall per station, and the longest dry spell.
 - `truth.py`, which computes the same three answers directly with pandas. `main.py` prints
   the agent's answer, the reference, and a `MATCH` / `MISMATCH` verdict.
-- Tracing through OpenInference's smolagents instrumentation exported over OTLP to Opik.
+- Tracing through OpenInference's smolagents instrumentation exported over OTLP to Opik,
+  with a small exporter wrapper so the spans carry a provider and don't double-count tokens.
 
 ## See it in Opik
 
@@ -44,9 +45,11 @@ Open the windiest-day trace. It has 8 spans: the root, three `Step` spans, three
   then what the code printed, here `Summit Pass 2026-03-11 67.3`. The generated code and
   the printed result are in neighbouring spans, so you can check that the number measures
   what the question asked.
-- **Usage.** Each `OpenAIModel.generate` span shows `gpt-4o-mini` and its prompt and completion
-  tokens. The prompt count climbs from step to step because every observation is appended to
-  the context. No dollar cost yet: see the first gotcha below.
+- **Usage and cost.** Each `llm` span shows provider `openai`, model `gpt-4o-mini`, and its
+  prompt and completion tokens. The trace totals 8,713 tokens and about $0.0016. The prompt
+  token count climbs from step to step (2,175, then 2,750, then 3,223) because every
+  observation is appended to the context. The rainfall trace (2 steps) costs about $0.0009 and
+  the dry-spell trace about $0.0013; a full run costs under half a cent.
 - **Trace input and output.** The trace input holds the briefing plus the question, and the
   output holds the final sentence the agent returned. Both columns are populated.
 
@@ -82,18 +85,31 @@ To regenerate the CSV: `uv run make_data.py`. Offline tests:
 
 **Cost is empty on every span.** Raw OpenInference spans carry `llm.model_name` and token
 counts, but no provider Opik recognises, so `total_estimated_cost` stays null even though
-usage is there. Opik prices a span only once it knows the provider, and it reads that from
-`gen_ai.system`; at this point the example does not set it.
+usage is there. Opik reads the provider from `gen_ai.system`. `fix_attributes` in
+`tracing.py` adds `gen_ai.system="openai"` to every span that names a model, and the cost
+appears (about $0.0005 per llm span here).
+
+**The trace token total is exactly double.** In the first run the root `CodeAgent.run` span
+showed up as an `llm` span with usage, and the trace reported 18,508 total tokens against
+9,254 actually spent. OpenInference stamps the agent span with the sum of its model calls'
+`llm.token_count.*`, and Opik turns any span with those attributes into an `llm` span and
+adds it to the total. The exporter wrapper in `tracing.py` removes `llm.token_count.*` from
+spans without an `llm.model_name`, which leaves only the real model calls.
+
+**`TypeError: Cannot mutate immutable BoundedAttributes`.** A finished span's attributes
+cannot be edited in a span processor's `on_end`. `OpikFriendlyExporter` rebuilds each `ReadableSpan` with corrected attributes
+just before the OTLP export.
 
 ## How it's put together
 
 - `main.py`: loads `.env`, starts tracing, asks the three questions, prints verdicts, flushes.
 - `agent.py`: the briefing, the questions, and the `CodeAgent` (pandas-only imports).
-- `tracing.py`: OTLP setup and `SmolagentsInstrumentor`.
+- `tracing.py`: OTLP setup, `SmolagentsInstrumentor`, and the attribute-fixing exporter.
 - `truth.py`: pandas reference answers and a fact-matching grader.
 - `make_data.py`: deterministic generator for `data/readings.csv`.
 - `tests/test_truth.py`: planted storm, dry spell and sensor gaps; the grader.
 - `tests/test_agent.py`: briefing, question list, `ask` with a stub agent.
+- `tests/test_tracing.py`: attribute fixing and the exporter wrapper, no network.
 
 ---
 
