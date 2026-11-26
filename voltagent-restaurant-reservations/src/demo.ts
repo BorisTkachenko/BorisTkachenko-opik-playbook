@@ -24,10 +24,12 @@ if (!process.env.OPENAI_API_KEY) {
 }
 
 const { VoltAgent } = await import("@voltagent/core");
+const { observability, PROJECT } = await import("./observability.ts");
 const { reservationAgent } = await import("./agent.ts");
 
-// Registering the agent on a VoltAgent instance (no `server` option, so no HTTP port).
-new VoltAgent({ agents: { reservationAgent } });
+// Registering the agent with the Opik-wired observability makes every
+// generateText call a trace. No `server` option, so no HTTP port is opened.
+new VoltAgent({ agents: { reservationAgent }, observability });
 
 const GUESTS = [
   // Full at 19:00 on the 5th -> agent should offer alternatives.
@@ -35,7 +37,7 @@ const GUESTS = [
   // Chains availability -> booking.
   "Then please book 4 for Dec 5th at 21:00 under the name Alvarez.",
   // Dietary lookup, no booking.
-  "One of our group is vegan and another is gluten-free. What mains can they eat?",
+  "One of our guests is vegan. Which mains can they eat, and what would a starter add?",
   // Cancel an existing booking.
   "Please cancel booking BK-1004, our plans changed.",
 ];
@@ -45,4 +47,7 @@ for (const [i, message] of GUESTS.entries()) {
   const result = await reservationAgent.generateText(message);
   console.log(`Assistant: ${result.text}`);
 }
+// shutdown() flushes the BatchSpanProcessor; exiting before it runs drops the last spans.
+await observability.shutdown();
+console.log(`\nDone. Open the "${PROJECT}" project in Opik.`);
 process.exit(0);
