@@ -1,0 +1,13 @@
+[project]
+name = "pydantic-ai-camera-listing-extraction"
+version = "0.1.0"
+description = "Pydantic AI agent that turns messy vintage-camera marketplace posts into typed listings"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic-ai-slim[openai]>=1.0",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]

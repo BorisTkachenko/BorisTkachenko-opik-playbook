@@ -1,0 +1,56 @@
+[
+  {
+    "id": "full-detail-rangefinder",
+    "text": "FS: Kestrel RF-3 rangefinder, M39 screw mount, 'user grade' (light brassing, clean glass). Shutter fires 1/30 to 1/500 within tolerance, meter dead as always. Shutter count 14,200 per the service tag. $340 shipped in the US. Includes original leather case, a Kestrel 50mm f/2 lens, and strap. Located in Tucson.",
+    "expected": {
+      "brand": "Kestrel", "model": "RF-3", "mount": "M39",
+      "condition": "user grade", "price_usd": 340, "shutter_count": 14200,
+      "accessories": ["leather case", "50mm f/2 lens", "strap"], "location": "Tucson"
+    }
+  },
+  {
+    "id": "no-price-no-count",
+    "text": "Hallmark Vesper SLR for sale, K bayonet. Body only, mint condition, seals redone last year. DM me for price, I'm open to trades. Pickup in Leeds.",
+    "expected": {
+      "brand": "Hallmark", "model": "Vesper", "mount": "K bayonet",
+      "condition": "mint", "price_usd": null, "shutter_count": null,
+      "accessories": [], "location": "Leeds"
+    }
+  },
+  {
+    "id": "price-in-euros",
+    "text": "Selling my Oberhaus Pico 35 compact, fixed lens so no mount to speak of. Cosmetically 7/10. Asking 180 EUR, will not ship outside the EU. Comes with the flash and original box.",
+    "expected": {
+      "brand": "Oberhaus", "model": "Pico 35", "mount": null,
+      "condition": "7/10", "price_usd": null, "shutter_count": null,
+      "accessories": ["flash", "original box"], "location": null
+    }
+  },
+  {
+    "id": "vague-everything",
+    "text": "old camera from my grandad, black, has a lens on it. works i think?? make offer. text Pri 555-0199",
+    "expected": {
+      "brand": null, "model": null, "mount": null,
+      "condition": null, "price_usd": null, "shutter_count": null,
+      "accessories": [], "location": null
+    }
+  },
+  {
+    "id": "count-as-clicks",
+    "text": "WTS Brightline Corona 6x7 medium format. Frame counter irrelevant but the shutter is at about 8k actuations (seller's guess, not tested). Good condition, small dent on the prism. Asking $1,250 OBO. PL mount, no lens. Ships from Rotterdam but I can quote USD for the buyer.",
+    "expected": {
+      "brand": "Brightline", "model": "Corona 6x7", "mount": "PL",
+      "condition": "good", "price_usd": 1250, "shutter_count": 8000,
+      "accessories": [], "location": "Rotterdam"
+    }
+  },
+  {
+    "id": "brand-only-hint",
+    "text": "Kestrel body, the little one, bayonet mount I think. Priced to move at $95, cap included. Shutter count unknown, never checked. Somewhere in Ohio.",
+    "expected": {
+      "brand": "Kestrel", "model": null, "mount": "bayonet",
+      "condition": null, "price_usd": 95, "shutter_count": null,
+      "accessories": ["cap"], "location": "Ohio"
+    }
+  }
+]
