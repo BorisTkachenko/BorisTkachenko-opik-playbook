@@ -51,3 +51,21 @@ def missing_hours(df: pd.DataFrame) -> dict[str, int]:
     """Hours per station where the sensors reported nothing (blank rows)."""
     blank = df["temp_c"].isna()
     return {k: int(v) for k, v in blank.groupby(df["station"]).sum().items() if v}
+
+
+def reference_answers(df: pd.DataFrame) -> list[tuple[str, list[str]]]:
+    """One (reference sentence, facts the answer must contain) pair per question,
+    in the same order as agent.QUESTIONS."""
+    station, date, wind = windiest_day(df)
+    rain = rainfall_by_station(df)
+    d_station, days, first, last = longest_dry_spell(df)
+    return [
+        (f"{station} on {date}, mean wind {wind} km/h", [station, date, str(wind)]),
+        ("; ".join(f"{k} {v}" for k, v in rain.items()), [f"{v}" for v in rain.values()]),
+        (f"{d_station}, {days} days, {first} to {last}", [d_station, str(days)]),
+    ]
+
+
+def grade(answer: str, facts: list[str]) -> bool:
+    """True when every expected fact appears in the answer text."""
+    return all(f in answer for f in facts)
