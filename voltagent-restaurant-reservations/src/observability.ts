@@ -4,6 +4,7 @@
 import { VoltAgentObservability } from "@voltagent/core";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto";
+import { GenAIMappingExporter } from "./genai-mapping.ts";
 
 export const PROJECT = process.env.OPIK_PROJECT_NAME ?? "voltagent-restaurant-reservations";
 
@@ -21,7 +22,10 @@ if (process.env.OPIK_API_KEY) headers.Authorization = process.env.OPIK_API_KEY;
 export const observability = new VoltAgentObservability({
   serviceName: PROJECT,
   spanProcessors: [
-    // http/protobuf on purpose: this Opik accepted http/json with a 200 but ingested nothing.
-    new BatchSpanProcessor(new OTLPTraceExporter({ url: `${opikBase}/v1/private/otel/v1/traces`, headers })),
+    // http/protobuf is the OTLP transport verified against Opik's endpoint.
+    // The wrapper renames VoltAgent's attributes to gen_ai.* so llm spans carry model, usage and cost.
+    new BatchSpanProcessor(
+      new GenAIMappingExporter(new OTLPTraceExporter({ url: `${opikBase}/v1/private/otel/v1/traces`, headers })),
+    ),
   ],
 });
