@@ -1,0 +1,10 @@
+[
+  {"policy_id": "POL-1001", "holder": "Marta Lindqvist", "type": "auto", "status": "active",
+   "deductible_usd": 500, "coverage_limit_usd": 25000, "collision": true, "rental_days_included": 10},
+  {"policy_id": "POL-1002", "holder": "Dev Okonkwo", "type": "home", "status": "active",
+   "deductible_usd": 1000, "coverage_limit_usd": 300000, "water_damage": true, "flood": false},
+  {"policy_id": "POL-1003", "holder": "Hannah Brandt", "type": "auto", "status": "lapsed",
+   "deductible_usd": 1000, "coverage_limit_usd": 15000, "collision": true, "rental_days_included": 0},
+  {"policy_id": "POL-1004", "holder": "Tomas Vidal", "type": "home", "status": "active",
+   "deductible_usd": 750, "coverage_limit_usd": 220000, "water_damage": true, "flood": false}
+]

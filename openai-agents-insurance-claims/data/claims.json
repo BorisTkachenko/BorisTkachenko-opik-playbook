@@ -1,0 +1,14 @@
+[
+  {"claim_id": "CLM-2001", "policy_id": "POL-1001", "kind": "auto", "filed": "2025-03-04",
+   "loss_date": "2025-03-02", "description": "Rear-ended at a red light on Harbor Road. Bumper and trunk lid crushed, car drivable.",
+   "repair_estimate_usd": 3150, "police_report": true, "prior_claims_12m": 0},
+  {"claim_id": "CLM-2002", "policy_id": "POL-1002", "kind": "property", "filed": "2025-03-06",
+   "loss_date": "2025-03-05", "description": "Washing machine hose burst while the family was out; kitchen and hallway floors soaked.",
+   "repair_estimate_usd": 8400, "police_report": false, "prior_claims_12m": 0},
+  {"claim_id": "CLM-2003", "policy_id": "POL-1003", "kind": "auto", "filed": "2025-03-07",
+   "loss_date": "2025-02-27", "description": "Total loss after a collision; claimant says the car was parked and hit overnight, no witnesses.",
+   "repair_estimate_usd": 14200, "police_report": false, "prior_claims_12m": 3},
+  {"claim_id": "CLM-2004", "policy_id": "POL-1004", "kind": "property", "filed": "2025-03-08",
+   "loss_date": "2025-03-08", "description": "Basement flooded after a heavy storm; water came in through the ground-level window.",
+   "repair_estimate_usd": 12600, "police_report": false, "prior_claims_12m": 1}
+]
