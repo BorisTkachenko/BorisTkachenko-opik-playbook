@@ -14,10 +14,18 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+# Pin the Opik project before opik is imported, so traces never fall into "Default Project".
+os.environ.setdefault("OPIK_PROJECT_NAME", "openai-agents-insurance-claims")
 
-from agents import Agent, Runner, function_tool
+import opik
+from agents import Agent, Runner, function_tool, set_trace_processors, trace
+from opik.integrations.openai.agents import OpikTracingProcessor
 
 import claims_data
+
+# Replaces the SDK's default OpenAI-dashboard exporter: every agent run now streams to Opik as a
+# trace, with agent / handoff / tool / llm spans nested as a tree.
+set_trace_processors(processors=[OpikTracingProcessor()])
 
 MODEL = os.environ.get("CLAIMS_MODEL", "gpt-4o-mini")
 
@@ -124,10 +132,17 @@ def run_demo() -> None:
         for message in turns:
             print(f"\nClaimant: {message}")
             history.append({"role": "user", "content": message})
-            result = Runner.run_sync(triage_agent, history)
+            # One SDK trace per turn. The shared group_id becomes the Opik thread_id, so the
+            # Threads tab stitches a claimant's turns into one conversation.
+            with trace(workflow_name="Claims triage", group_id=thread_id):
+                result = Runner.run_sync(triage_agent, history)
             print(f"Agent ({result.last_agent.name}): {result.final_output}")
             history = result.to_input_list()
 
 
 if __name__ == "__main__":
-    run_demo()
+    try:
+        run_demo()
+    finally:
+        # Traces are sent from a background thread; flush so a short script doesn't exit with spans unsent.
+        opik.flush_tracker()
