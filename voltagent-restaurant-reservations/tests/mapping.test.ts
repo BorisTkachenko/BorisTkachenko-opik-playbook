@@ -23,14 +23,20 @@ describe("mapToGenAI", () => {
     expect(a["gen_ai.usage.total_tokens"]).toBe(663);
   });
 
-  it("mirrors tool arguments to gen_ai.tool.call.arguments", () => {
-    const a = mapToGenAI({ "span.type": "tool", input: '{"diet":"vegan"}' });
+  it("drops VoltAgent bookkeeping so span input is not a wall of ids", () => {
+    const a = mapToGenAI({ ...llm(), "operation.id": "x", "entity.id": "agent", "usage.prompt_context.total_tokens_estimated": 459 });
+    expect(Object.keys(a).filter((k) => !k.startsWith("gen_ai."))).toEqual([]);
+  });
+
+  it("mirrors tool arguments to gen_ai.tool.call.arguments and drops the raw input", () => {
+    const a = mapToGenAI({ "span.type": "tool", "tool.name": "list_dietary_menu", input: '{"diet":"vegan"}' });
     expect(a["gen_ai.tool.call.arguments"]).toBe('{"diet":"vegan"}');
+    expect(a).not.toHaveProperty("input");
   });
 
   it("never types the agent root span as llm, so trace tokens are not double-counted", () => {
     const a = mapToGenAI({ "entity.type": "agent", input: "hi", output: "hello", "usage.total_tokens": 663 });
-    expect(Object.keys(a).filter((k) => k.startsWith("gen_ai."))).toEqual([]);
+    expect(a).toEqual({ input: "hi", output: "hello" });
   });
 });
 
