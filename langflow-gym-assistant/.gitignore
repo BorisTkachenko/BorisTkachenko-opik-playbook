@@ -1,0 +1,4 @@
+.env
+.flow_id
+*.log
+__pycache__/

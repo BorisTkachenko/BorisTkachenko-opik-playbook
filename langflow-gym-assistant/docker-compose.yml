@@ -1,0 +1,19 @@
+services:
+  langflow:
+    image: langflowai/langflow:1.13.4
+    container_name: langflow-gym-assistant
+    ports:
+      - "${LANGFLOW_PORT:-7860}:7860"
+    environment:
+      # Single-user local demo: log in automatically, no sign-up screen.
+      LANGFLOW_AUTO_LOGIN: "true"
+      # Langflow copies these environment variables into its own global
+      # variables at startup, so the flow's API Key field can reference
+      # OPENAI_API_KEY by name instead of storing the key in the flow.
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      LANGFLOW_VARIABLES_TO_GET_FROM_ENVIRONMENT: "OPENAI_API_KEY"
+    volumes:
+      - langflow_data:/app/langflow
+
+volumes:
+  langflow_data:

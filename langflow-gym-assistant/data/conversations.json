@@ -1,0 +1,26 @@
+[
+  {
+    "member": "Dana, thinking about joining",
+    "session_id": "dana-joining",
+    "turns": [
+      "Hi! What's the cheapest way to do yoga twice a week?",
+      "And if I sign up for that in person, is there a joining fee?",
+      "Which evenings is yoga on?"
+    ]
+  },
+  {
+    "member": "Marco, going travelling",
+    "session_id": "marco-freeze",
+    "turns": [
+      "I'm on the Student plan and I'm away for two months. Can I freeze it?",
+      "OK, how do I cancel then?"
+    ]
+  },
+  {
+    "member": "Lena, asking about the sauna",
+    "session_id": "lena-sauna",
+    "turns": [
+      "Does the gym have a sauna, and is it included in Basic?"
+    ]
+  }
+]
