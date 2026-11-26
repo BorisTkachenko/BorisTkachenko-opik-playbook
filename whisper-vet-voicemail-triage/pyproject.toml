@@ -5,6 +5,7 @@ description = "Veterinary-clinic voicemail triage: TTS -> Whisper -> urgency lev
 requires-python = ">=3.12"
 dependencies = [
     "openai>=1.60",
+    "opik>=2.3.4",
     "python-dotenv>=1.0",
 ]
 
