@@ -1,0 +1,9 @@
+[project]
+name = "litellm-flashcard-router"
+version = "0.1.0"
+description = "Same flashcard workload, two LiteLLM providers, one cost and latency table."
+requires-python = ">=3.12"
+dependencies = [
+    "litellm>=1.79",
+    "python-dotenv>=1.2.3",
+]
