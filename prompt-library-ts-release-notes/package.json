@@ -1,0 +1,23 @@
+{
+  "name": "prompt-library-ts-release-notes",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Release-note headline writer whose prompt lives in Opik's prompt library as immutable versions",
+  "scripts": {
+    "demo": "tsx src/main.ts",
+    "verify": "tsx src/verify.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "openai": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  }
+}

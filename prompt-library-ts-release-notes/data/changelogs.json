@@ -1,0 +1,48 @@
+[
+  {
+    "tool": "tidepool",
+    "version": "3.4.0",
+    "changes": [
+      "Added `tidepool sync --watch` to re-run a sync whenever a source file changes",
+      "Cold-start time dropped from 900 ms to 310 ms by lazy-loading the plugin registry",
+      "Fixed a crash when the config file contained a trailing comma"
+    ]
+  },
+  {
+    "tool": "tidepool",
+    "version": "3.5.0",
+    "changes": [
+      "New `tidepool doctor` command checks credentials, network and cache health in one pass",
+      "Config files can now be written in TOML as well as JSON",
+      "Deprecated the `--legacy-paths` flag; it will be removed in 4.0"
+    ]
+  },
+  {
+    "tool": "tidepool",
+    "version": "3.5.1",
+    "changes": [
+      "Fixed `tidepool sync` silently skipping files larger than 2 GB",
+      "Fixed progress bar flicker on Windows terminals"
+    ]
+  },
+  {
+    "tool": "tidepool",
+    "version": "3.6.0",
+    "changes": [
+      "Plugins can now ship their own shell completions",
+      "`tidepool init` asks for a project name instead of guessing from the folder",
+      "Upgraded the bundled HTTP client; downloads resume after a dropped connection",
+      "Removed the long-deprecated `tidepool push` alias"
+    ]
+  },
+  {
+    "tool": "tidepool",
+    "version": "4.0.0",
+    "changes": [
+      "BREAKING: removed the `--legacy-paths` flag and the JSON-only config loader",
+      "New plugin API v2 with typed hooks; v1 plugins keep working through a compatibility shim",
+      "Sync is now 3x faster on repositories with more than 10,000 files",
+      "Windows ARM64 binaries are published for the first time"
+    ]
+  }
+]
