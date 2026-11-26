@@ -2,6 +2,7 @@ import "./env.js";
 import { askGuide, NOTES } from "./guide.js";
 import { DEMO_QUESTIONS } from "./questions.js";
 import { verifyQuotes } from "./notes.js";
+import { flush } from "./tracing.js";
 
 for (const question of DEMO_QUESTIONS) {
   const answer = await askGuide(question);
@@ -9,3 +10,6 @@ for (const question of DEMO_QUESTIONS) {
   console.log(`Q: ${question}\nA: ${answer}`);
   console.log(`   quotes: ${checks.filter((c) => c.verbatim).length}/${checks.length} verbatim\n`);
 }
+
+// The SDK batches writes in the background; without a flush a short script can exit before they are sent.
+await flush();
