@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import { ChatOpenAI } from "@langchain/openai";
+import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 import { createChat, SessionStore } from "./chat.js";
 import { flushOpik, handlerFor } from "./tracing.js";
@@ -19,9 +20,10 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(here, "../.env"), quiet: true });
 dotenv.config({ path: path.join(here, "../../.env"), quiet: true });
 
-export function buildServer() {
+// The model is injectable so tests can pass a fake; the default needs OPENAI_API_KEY.
+export function buildServer(model: BaseChatModel = new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0 })) {
   const sessions = new SessionStore();
-  const answer = createChat(new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0 }), sessions);
+  const answer = createChat(model, sessions);
 
   const app = Fastify({ logger: false });
   app.register(fastifyStatic, { root: path.join(here, "../public") });

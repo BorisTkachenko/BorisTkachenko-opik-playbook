@@ -58,8 +58,9 @@ export function formatFacts(docs: Doc[]): string {
 export function createChat(model: BaseChatModel, sessions: SessionStore) {
   const docs = buildDocs(loadShop());
 
-  // Retrieval lives in a named tool function, not a bare retriever, so it is a
-  // first-class step with a readable name and input/output.
+  // Retrieval lives in a named tool function, not a bare retriever: Opik records it as a
+  // `tool` span called lookup_shop_info with the query and the facts, and a bare
+  // retriever run can be dropped by the callback handler in some versions.
   const lookupShopInfo = tool(
     async ({ query }: { query: string }) => formatFacts(retrieve(docs, query)),
     {
@@ -101,6 +102,7 @@ export function createChat(model: BaseChatModel, sessions: SessionStore) {
   return async function answer(sessionId: string, message: string, extra: RunnableConfig = {}): Promise<string> {
     const reply = await chain.invoke(message, {
       ...extra,
+      // runName names the ROOT run: this is the trace name in Opik's Traces tab.
       runName: "bike-shop-turn",
       configurable: { sessionId },
     });
