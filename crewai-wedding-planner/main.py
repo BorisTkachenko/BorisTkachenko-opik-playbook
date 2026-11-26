@@ -10,11 +10,14 @@ for parent in Path(__file__).resolve().parents:
         load_dotenv(parent / ".env")
         break
 
+import opik
 from crewai import Agent, Crew, Process, Task
+from opik.integrations.crewai import track_crewai
 
 import planning
 
 MODEL = "gpt-4o-mini"
+PROJECT = "crewai-wedding-planner"
 
 venue_scout = Agent(
     role="Venue Scout",
@@ -77,6 +80,10 @@ crew = Crew(
     verbose=True,
 )
 
+# track_crewai patches CrewAI and LiteLLM so one kickoff becomes ONE trace: a span per task and
+# agent, with every LLM call logged as an llm span carrying model, token usage and cost.
+track_crewai(project_name=PROJECT, crew=crew)
+
 GUESTS = 85
 
 
@@ -92,3 +99,5 @@ if __name__ == "__main__":
     result = crew.kickoff(inputs=inputs())
     print("\n=== WEDDING PLAN ===\n")
     print(result)
+    # Traces are sent from a background thread; flush so a short script doesn't exit before they land.
+    opik.flush_tracker()
