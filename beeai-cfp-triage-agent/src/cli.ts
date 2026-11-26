@@ -5,7 +5,7 @@ import { loadEnv, requireKey } from "./config/env.ts";
 const DEMO_IDS = ["P-1001", "P-1005", "P-1003"];
 
 async function main(): Promise<void> {
-  const { positionals } = parseArgs({ allowPositionals: true });
+  const { positionals, values } = parseArgs({ allowPositionals: true, options: { since: { type: "string" } } });
   const [command, arg] = positionals;
   loadEnv();
 
@@ -14,8 +14,12 @@ async function main(): Promise<void> {
     for (const p of proposals()) console.log(`${p.id}  [${p.track}]  ${p.title}`);
     return;
   }
+  if (command === "verify") {
+    const { verifyProject } = await import("./telemetry/verify.ts");
+    process.exit((await verifyProject(values.since)) ? 0 : 1);
+  }
   if (command !== "triage" && command !== "demo") {
-    console.error("Usage: cli.ts <list | triage <proposal-id> | demo>");
+    console.error("Usage: cli.ts <list | triage <proposal-id> | demo | verify>");
     process.exit(2);
   }
   requireKey("OPENAI_API_KEY");
