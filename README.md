@@ -81,11 +81,13 @@ Every folder stands on its own. The general shape:
    - Docker / low-code: `./setup.sh && ./demo.sh`
 4. **Open the project named after the folder in Opik.** Each README's *See it in Opik* section says where to click.
 
-Offline tests ship with every Python and TypeScript example. They need no provider keys and no Opik:
+Every example ships offline tests that need no provider keys and no Opik:
 
 ```bash
 env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY OPIK_TRACK_DISABLE=true uv run pytest   # Python
 npm test                                                                            # TypeScript (each README names its switch)
+mvn test                                                                            # Java
+python3 -m unittest discover -s tests -v                                            # n8n / Langflow
 ```
 
 ## What's in a folder
@@ -94,7 +96,7 @@ npm test                                                                        
 - **The app**: small enough to read in one sitting, with a short comment at every Opik touchpoint saying what it produces in the UI.
 - **`data/` or `docs/`**: fictional inputs (no external APIs, no real datasets). Generated media is produced at run time.
 - **`.env.example`**: only the variables that example reads.
-- **`tests/`**: a handful of offline tests, including one that calls a traced function with tracking off.
+- **`tests/`** (`src/test` for Java): a handful of offline tests. In the Python and TypeScript examples, one of them calls a traced function with tracking off.
 - **Git history**: each example arrived as a short series of commits, often a plain app first and then the commit that adds Opik. `git log -- <folder>` shows the diff from "works" to "observable".
 
 ## License
