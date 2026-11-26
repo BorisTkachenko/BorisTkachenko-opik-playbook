@@ -100,4 +100,5 @@ if __name__ == "__main__":
     print("\n=== WEDDING PLAN ===\n")
     print(result)
     # Traces are sent from a background thread; flush so a short script doesn't exit before they land.
+    # flush_tracker blocks until every queued trace has been delivered to Opik.
     opik.flush_tracker()
