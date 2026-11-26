@@ -1,0 +1,59 @@
+{
+  "shop": "Crankshaft Cycles",
+  "address": "14 Tannery Lane, Millbrook",
+  "phone": "555-0142",
+  "hours": {
+    "Monday": "closed",
+    "Tuesday": "09:00-18:00",
+    "Wednesday": "09:00-18:00",
+    "Thursday": "09:00-20:00",
+    "Friday": "09:00-18:00",
+    "Saturday": "10:00-16:00",
+    "Sunday": "closed"
+  },
+  "services": [
+    {
+      "name": "Basic tune-up",
+      "price": 59,
+      "turnaround": "same day if dropped off before noon",
+      "includes": "brake and gear adjustment, tyre pressure, chain lube, bolt check"
+    },
+    {
+      "name": "Full tune-up",
+      "price": 129,
+      "turnaround": "2 working days",
+      "includes": "everything in the basic tune-up plus drivetrain deep clean, wheel truing, cable check and headset service"
+    },
+    {
+      "name": "Flat tyre repair",
+      "price": 15,
+      "turnaround": "while you wait, about 20 minutes",
+      "includes": "tube patch or replacement tube, tyre check; a new tube adds 6 dollars"
+    },
+    {
+      "name": "Brake pad replacement",
+      "price": 25,
+      "turnaround": "same day",
+      "includes": "labour per wheel; pads are extra, 12 dollars per pair for standard rim or disc pads"
+    },
+    {
+      "name": "E-bike service",
+      "price": 149,
+      "turnaround": "3 working days",
+      "includes": "full tune-up plus motor and battery diagnostics; we service Bosch and Shimano motors only"
+    }
+  ],
+  "policies": [
+    "Bookings are free to cancel up to 24 hours before the drop-off slot.",
+    "We do not repair carbon frames or suspension forks; we can recommend a specialist.",
+    "Unclaimed bikes are stored free for 14 days, then 5 dollars per day.",
+    "Booking works by phone (555-0142) or at the counter. Nothing can be booked through this chat; the assistant can only suggest open slots."
+  ],
+  "openSlots": [
+    "Tuesday 09:30",
+    "Tuesday 14:00",
+    "Wednesday 11:00",
+    "Thursday 17:30",
+    "Saturday 10:30"
+  ]
+}
