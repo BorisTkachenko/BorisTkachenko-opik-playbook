@@ -1,0 +1,39 @@
+{
+  "name": "vercel-ai-sveltekit-garden-chat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Streaming garden-care chat in SvelteKit on the Vercel AI SDK, traced with Opik and scored by a live online-evaluation rule",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "node build",
+    "check": "svelte-kit sync && tsc --noEmit",
+    "prepare": "svelte-kit sync",
+    "pretest": "svelte-kit sync",
+    "test": "vitest run",
+    "demo": "node scripts/demo.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^4.0.125",
+    "@ai-sdk/otel": "^1.0.183",
+    "@ai-sdk/svelte": "^5.0.183",
+    "@opentelemetry/api": "~1.9.1",
+    "@opentelemetry/sdk-node": "^0.222.0",
+    "ai": "^7.0.183",
+    "dotenv": "^18.0.5",
+    "opik": "^2.3.4",
+    "opik-vercel": "^2.3.4",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^6.0.6",
+    "@sveltejs/kit": "^3.4.1",
+    "@sveltejs/vite-plugin-svelte": "^7.3.2",
+    "@types/node": "^24.0.0",
+    "svelte": "^5.59.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.2"
+  }
+}
