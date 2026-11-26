@@ -1,0 +1,17 @@
+{
+  "catering": [
+    {"name": "Marrow & Thyme", "per_guest_usd": 78, "style": "family-style seasonal"},
+    {"name": "Brightside Kitchen", "per_guest_usd": 54, "style": "buffet, vegetarian-friendly"}
+  ],
+  "music": [
+    {"name": "The Paper Kites Quartet", "flat_usd": 1800, "style": "string quartet for ceremony and cocktail hour"},
+    {"name": "DJ Orbit", "flat_usd": 1300, "style": "DJ with lighting rig, 5 hours"}
+  ],
+  "photography": [
+    {"name": "Harbor Light Studio", "flat_usd": 3200, "style": "documentary, 8 hours, two shooters"},
+    {"name": "Fennel Frames", "flat_usd": 2100, "style": "single photographer, 6 hours"}
+  ],
+  "flowers": [
+    {"name": "Wild Acre Florals", "flat_usd": 1500, "style": "foraged, loose arrangements"}
+  ]
+}

@@ -1,0 +1,6 @@
+[
+  {"name": "Lantern Hollow Barn", "capacity": 140, "rental_usd": 6800, "setting": "restored timber barn", "notes": "No in-house catering; bring your own. Quiet hours start at 22:00."},
+  {"name": "Saltmarsh Pavilion", "capacity": 90, "rental_usd": 5200, "setting": "glass pavilion on a tidal marsh", "notes": "Ceremony must end by sunset in winter months. Catering required from approved list."},
+  {"name": "Old Mill Atrium", "capacity": 200, "rental_usd": 11500, "setting": "converted flour mill with courtyard", "notes": "Includes tables and chairs. Two-night minimum for Saturday dates."},
+  {"name": "Juniper Ridge Lodge", "capacity": 70, "rental_usd": 4100, "setting": "mountain lodge with a stone terrace", "notes": "Guests can stay on site (24 beds). Road closes in heavy snow."}
+]
