@@ -1,0 +1,8 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+uv.lock
+# the vector index is rebuilt by `rulebook build`; the PDFs in data/pdfs are committed inputs
+storage/
