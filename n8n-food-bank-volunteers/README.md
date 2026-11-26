@@ -52,6 +52,7 @@ You need Docker, `curl`, `python3`, an OpenAI key and an Opik to send to. For a 
 2. `./setup.sh` builds the image, starts n8n on `localhost:5678`, creates the owner account and the OpenAI credential, then imports and activates the workflow. It needs no browser.
 3. `./demo.sh` posts the four sign-ups in `data/applicants.json` and prints each screening result.
 4. Open the `n8n-food-bank-volunteers` project in Opik.
+5. Offline tests: `python3 -m unittest discover -s tests -v`. They check the exported workflow's wiring, the credential placeholder and the demo data, with no Docker, no key and no Opik (standard library only).
 
 To stop: `docker compose down`. Add `-v` to also wipe the n8n data volume.
 
@@ -76,6 +77,7 @@ To stop: `docker compose down`. Add `-v` to also wipe the n8n data volume.
 - `data/applicants.json`: four fictional sign-ups.
 - `setup.sh`: headless bootstrap. It derives the OTLP endpoint from `OPIK_URL_OVERRIDE` (swapping `localhost` for `host.docker.internal`), adds `Authorization` only when `OPIK_API_KEY` is set, then runs compose up, owner setup, API key, credential, import and activate.
 - `demo.sh`: posts each applicant to the webhook and prints the result.
+- `tests/test_workflow.py`: offline checks that every connection resolves, the IF branches lead to the two Set nodes, the webhook path matches `demo.sh`, and each applicant has every field the prompt reads.
 
 ---
 
