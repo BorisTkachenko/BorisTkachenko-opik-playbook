@@ -11,6 +11,7 @@ import fastifyStatic from "@fastify/static";
 import { ChatOpenAI } from "@langchain/openai";
 
 import { createChat, SessionStore } from "./chat.js";
+import { flushOpik, handlerFor } from "./tracing.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -31,7 +32,10 @@ export function buildServer() {
       return reply.code(400).send({ error: "Body must be { message: string, sessionId: string }" });
     }
     try {
-      return { reply: await answer(sessionId, message), sessionId };
+      // The per-session handler is passed as a LangChain callback: this one line is what
+      // makes the turn show up in Opik (trace named bike-shop-turn, in this session's thread).
+      const text = await answer(sessionId, message, { callbacks: [handlerFor(sessionId)] });
+      return { reply: text, sessionId };
     } catch (error) {
       console.error("Chat turn failed:", error);
       return reply.code(500).send({ error: "The assistant could not answer. Please try again." });
@@ -50,6 +54,7 @@ if (isMain) {
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.on(signal, async () => {
       await app.close();
+      await flushOpik(); // do not lose the last turns on Ctrl+C
       process.exit(0);
     });
   }

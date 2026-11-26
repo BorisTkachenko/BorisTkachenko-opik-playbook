@@ -4,7 +4,9 @@
   "description": "Chat widget backend for a fictional bike repair shop: LangChain.js on Fastify.",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "tsx src/server.ts",
     "demo": "tsx src/demo.ts",
@@ -16,11 +18,16 @@
     "@langchain/openai": "^0.6.9",
     "dotenv": "^17.2.0",
     "fastify": "^5.2.0",
+    "opik": "2.3.4",
+    "opik-langchain": "2.3.4",
     "zod": "^3.25.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
+  },
+  "overrides": {
+    "opik": "$opik"
   }
 }

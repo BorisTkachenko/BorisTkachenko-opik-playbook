@@ -3,6 +3,7 @@
  * multi-turn visitor conversations over HTTP, print the replies, shut down.
  */
 import { buildServer } from "./server.js";
+import { flushOpik, PROJECT_NAME } from "./tracing.js";
 
 const PORT = Number(process.env.PORT ?? 5451);
 
@@ -47,7 +48,9 @@ async function main() {
   }
 
   await app.close();
-  console.log("\nDone.");
+  // The server is down, but the SDK still holds batched traces: flush before the process exits.
+  await flushOpik();
+  console.log(`\nDone. Open the "${PROJECT_NAME}" project in Opik and look at the Threads tab.`);
 }
 
 main().catch((error) => {
