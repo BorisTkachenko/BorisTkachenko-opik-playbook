@@ -1,6 +1,8 @@
 services:
   langflow:
-    image: langflowai/langflow:1.13.4
+    # Langflow 1.13.4 plus a one-line fix to its Opik tracer (see Dockerfile).
+    build: .
+    image: langflow-gym-assistant:1.13.4-opikfix
     container_name: langflow-gym-assistant
     ports:
       - "${LANGFLOW_PORT:-7860}:7860"

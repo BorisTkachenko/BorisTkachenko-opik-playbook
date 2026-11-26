@@ -36,15 +36,14 @@ Opik is switched on by environment variables only, in `docker-compose.yml`:
 
 Open the **`langflow-gym-assistant`** project. After one demo run it holds **6 traces**, one per member message. Each trace is named after the flow's id, and the **Threads** tab groups them into **3 threads**, one per `session_id`: `dana-joining` (3 turns), `marco-freeze` (2) and `lena-sauna` (1). Open the `dana-joining` thread and it reads as the conversation she had.
 
-Inside a trace there are three spans in this version:
+Inside a trace there is one span per component that ran, in flow order: **`Chat Input`**, **`Message History`**, **`Type Convert`**, **`Prompt Template`**, **`Language Model`** and **`Chat Output`**. Inside the Language Model's work are the two spans LangChain adds:
 
-- **`Language Model`** (general): the component as Langflow ran it.
-- **`ChatPromptTemplate`**: the prompt with the facts filled in and the conversation so far.
-- **`ChatOpenAI`** (llm): the exact messages sent to gpt-4o-mini and its reply, with token usage and an estimated cost. The six calls together cost about **$0.001**. Prompts grow along a conversation as Message History adds earlier turns (from about 600 to about 1,950 tokens for Dana's third message).
+- **`ChatPromptTemplate`**: the prompt with the facts and the conversation so far filled in.
+- **`ChatOpenAI`** (llm): the exact messages sent to gpt-4o-mini and its reply, with token usage and an estimated cost.
+
+The six calls together cost about **$0.001**. Open `Message History` on Dana's later turns to see her earlier messages being read back. That's also why her prompts grow: 593, then 1,317, then 1,872 prompt tokens over her three turns.
 
 Now open Dana's first turn and expand `ChatOpenAI`. The input contains the price list (*"Basic: 29 dollars per month … Classes cost 8 dollars each"*, *"Plus: 49 dollars per month … unlimited group classes"*) and the output says *"totaling 45 dollars for the month"*. The facts were right there and the arithmetic was not. That's a prompt problem (nothing asks the model to work out a monthly total), and the trace shows it in one click. Lena's sauna question shows the opposite: the facts don't mention a sauna, and the model says it doesn't know instead of inventing one.
-
-Component spans for Chat Input, Message History, Prompt Template and Chat Output are missing, and the Langflow container log shows `TypeError: Opik.span() got an unexpected keyword argument 'source'` for each of them.
 
 ## Run it yourself
 
@@ -63,9 +62,18 @@ To stop: `docker compose down` (`-v` also deletes the flows and chat history).
 - **Break the memory.** Set Message History's `n_messages` to 1 and rerun. Marco's "how do I cancel then?" loses its context, and the shrinking prompt in the `ChatOpenAI` span shows why.
 - **Ask something off the sheet.** Send "Do you have parking?" with a new `session_id` and check whether the answer stays inside the facts.
 
+## Gotchas we hit
+
+**Traces arrive with only `Language Model`, `ChatPromptTemplate` and `ChatOpenAI`; the other components are missing.** The Langflow container log shows `TypeError: Opik.span() got an unexpected keyword argument 'source'` once per component. Cause: Langflow 1.13.4's tracer finishes each component span with `self._client.span(**span.__dict__)`, and the span object carries fields that `Opik.span()` doesn't accept: `source` in every opik 2.x release, and also `environment` from 2.1. Pinning another opik 2.x won't help. Fix: this example builds a one-line patch into the image (`Dockerfile` + `patch_opik_tracer.py`) that passes only the keyword arguments `Opik.span()` accepts. The patch refuses to build if the line ever changes, so a Langflow upgrade won't silently skip it.
+
+**`Model name/provider overrides require a built-in model selection, not a connected model object.`** You get this when you fill only the Language Model's *Model Name Override* (and *Provider Override*) through the API. Cause: the component's `model` field must hold a full model-selection object from Langflow's catalogue, and the overrides only patch that object. Fix: `setup.py` takes an OpenAI entry from `GET /api/v1/model_options/language`, renames it to `gpt-4o-mini`, and clears its `reasoning` flags. The catalogue's default OpenAI entries are reasoning models, and gpt-4o-mini would get reasoning parameters it doesn't accept.
+
+**`HTTP Error 403: Forbidden` from `/api/v1/run/{flow_id}`,** even with a valid login token. Cause: in Langflow 1.13 the run endpoint only accepts a Langflow API key. Fix: `demo.py` mints one with `POST /api/v1/api_key/` and sends it as `x-api-key`.
+
 ## How it's put together
 
-- `docker-compose.yml`: `langflowai/langflow:1.13.4` with auto-login, `OPENAI_API_KEY` exposed as a Langflow global variable, and the Opik variables for the built-in tracer.
+- `Dockerfile` / `patch_opik_tracer.py`: `langflowai/langflow:1.13.4` plus the tracer fix above.
+- `docker-compose.yml`: builds that image and runs it with auto-login, `OPENAI_API_KEY` exposed as a Langflow global variable, and the Opik variables for the built-in tracer.
 - `setup.sh`: works out the Opik URL as the container sees it, starts Langflow, and runs `setup.py`.
 - `setup.py`: builds the flow from the Memory Chatbot starter over Langflow's REST API (standard library only).
 - `demo.sh` / `demo.py`: play `data/conversations.json` through `/api/v1/run`, one `session_id` per member.

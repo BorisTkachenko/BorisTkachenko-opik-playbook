@@ -10,5 +10,5 @@ OPIK_URL="${OPIK_URL_OVERRIDE:-http://localhost:5173/api/}"
 OPIK_URL="${OPIK_URL/localhost/host.docker.internal}"
 export OPIK_URL_FOR_CONTAINER="${OPIK_URL/127.0.0.1/host.docker.internal}"
 echo "==> Langflow will trace to Opik at $OPIK_URL_FOR_CONTAINER (project langflow-gym-assistant)"
-docker compose up -d
+docker compose up -d --build
 python3 setup.py
