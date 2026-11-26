@@ -6,7 +6,7 @@ import openai
 import opik
 from opik.integrations.openai import track_openai
 
-from .config import MODEL, PROJECT_NAME
+from .config import MODEL, PROJECT_NAME, RESPONSE_FORMAT
 from .prompts import USER_TEMPLATE
 
 
@@ -26,6 +26,7 @@ def classify(system_prompt: str, report: str) -> str:
     response = _client().chat.completions.create(
         model=MODEL,
         temperature=0,
+        response_format=RESPONSE_FORMAT,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": USER_TEMPLATE.format(report=report)},

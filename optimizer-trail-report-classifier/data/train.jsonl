@@ -1,19 +1,15 @@
 {"report": "Three spruce trunks are down across the Fernwood Loop just past the second footbridge. Had to crawl under the biggest one.", "label": "trail_hazard"}
 {"report": "The switchbacks below Kettle Pass are glazed with ice at 7am. Nearly lost my footing twice, someone should put grit down.", "label": "trail_hazard"}
 {"report": "Hillside slumped onto the Cinder Ridge trail around mile 3. Half the tread is gone and there is a long drop on the downhill side.", "label": "trail_hazard"}
-{"report": "The plank bridge over Larkspur Creek has a rotten board in the middle. My foot went right through it.", "label": "trail_hazard"}
-{"report": "Black bear and two cubs foraging in the huckleberries about 200 yards below Kettle Pass junction, around 4pm. They ignored us and we backed away.", "label": "wildlife_sighting"}
+{"report": "Black bear and two cubs foraging in the huckleberries about 200 yards below Kettle Pass junction, around 4pm. They ignored us and we backed away.", "label": "trail_hazard"}
 {"report": "Saw a pair of golden eagles circling over the Hollow Rim overlook this morning, one carried a snake.", "label": "wildlife_sighting"}
 {"report": "A herd of about 30 elk crossed the Marrow Meadow road at dusk, lots of calves among them.", "label": "wildlife_sighting"}
-{"report": "Moose cow standing in Tern Pond when we passed at lunchtime. Kept 50 yards back the whole time.", "label": "wildlife_sighting"}
 {"report": "The pit toilet at the Fernwood trailhead has no toilet paper and the door latch is broken off.", "label": "facility_issue"}
 {"report": "Trail sign at the Cinder Ridge fork has fallen over, and the arrow now points into the brush. New hikers will go the wrong way.", "label": "facility_issue"}
 {"report": "Water spigot at Blue Gate campground drips constantly and the whole tap area is a mud pit.", "label": "facility_issue"}
-{"report": "The trailhead parking lot lights at Marrow Meadow have been out all week, it is pitch dark by 6pm.", "label": "facility_issue"}
 {"report": "Found a blue insulated water bottle with a dented lid on the bench at Hollow Rim overlook. I left it at the visitor center desk.", "label": "lost_and_found"}
 {"report": "I lost my car key fob somewhere between Tern Pond and the Fernwood lot yesterday afternoon. Black fob with a red tag, please call if anyone hands it in.", "label": "lost_and_found"}
 {"report": "Picked up a child's yellow rain jacket on the Larkspur Creek path, it is hanging on the trailhead signpost.", "label": "lost_and_found"}
-{"report": "Did anyone turn in a pair of prescription sunglasses in a brown case? I think they fell out of my pack at Kettle Pass.", "label": "lost_and_found"}
 {"report": "Ranger Okafor gave our kids a junior naturalist talk at Tern Pond and they have not stopped talking about it. Thank you so much!", "label": "compliment"}
 {"report": "Best maintained trail we have hiked all summer. The new boardwalk on Marrow Meadow made it possible for my mother in her wheelchair.", "label": "compliment"}
 {"report": "Whoever repainted the trail markers on Cinder Ridge, thank you, I never doubted the route once.", "label": "compliment"}
@@ -22,3 +18,32 @@
 {"report": "Is there a shuttle from the visitor center to the Fernwood trailhead on weekdays in October?", "label": "other"}
 {"report": "You should add a short loop for families near the visitor center, something under a mile.", "label": "other"}
 {"report": "What time does the park gate close in November? Our flight lands late and we want to camp.", "label": "other"}
+{"report": "An elk bull is standing on the Fernwood Loop boardwalk snorting at anyone who gets close. We could not get past and turned back.", "label": "trail_hazard"}
+{"report": "A coyote followed our group for half a mile on Cinder Ridge and would not back off even when we shouted.", "label": "trail_hazard"}
+{"report": "Wasp nest the size of a football hangs right over the Larkspur Creek path and people keep brushing under it.", "label": "trail_hazard"}
+{"report": "Small brown dog with a red collar wandering alone near Blue Gate campground, no owner anywhere in sight.", "label": "lost_and_found"}
+{"report": "Our beagle Biscuit slipped his leash by the Marrow Meadow lot around noon. Please call if you see him.", "label": "lost_and_found"}
+{"report": "The handrail on the Hollow Rim steps has come loose and wobbles badly, someone is going to fall.", "label": "facility_issue"}
+{"report": "The viewing platform railing at Marrow Meadow is cracked right through at the corner post.", "label": "facility_issue"}
+{"report": "Boardwalk planks at Marrow Meadow are coated in green algae and I slipped hard near the second bend.", "label": "trail_hazard"}
+{"report": "Is the Cinder Ridge trail still icy near the top? We are planning to go on Saturday.", "label": "other"}
+{"report": "Are the Kettle Pass switchbacks open again after the rockfall last week?", "label": "other"}
+{"report": "Fresh cougar tracks in the mud at the Fernwood trailhead, and my wife swears she saw a big cat's tail slip into the brush.", "label": "trail_hazard"}
+{"report": "A wolf watched us from the meadow edge below Kettle Pass for about ten minutes and never came closer.", "label": "trail_hazard"}
+{"report": "Someone scratched graffiti into the Hollow Rim viewing rail, right across the interpretive panel.", "label": "facility_issue"}
+{"report": "Bags of trash and a broken cooler were left in the Blue Gate campground fire ring.", "label": "facility_issue"}
+{"report": "A group was playing loud music and flying a drone over Tern Pond all afternoon, ruining the quiet.", "label": "other"}
+{"report": "A black bear walked through the Blue Gate campground at dawn and sniffed around the food lockers.", "label": "trail_hazard"}
+{"report": "Mountain lion seen crossing the Marrow Meadow road ahead of our car, long tail, unmistakable.", "label": "trail_hazard"}
+{"report": "Two wolves howling on the ridge above Tern Pond all night, they sounded close.", "label": "trail_hazard"}
+{"report": "Found a leashed terrier tied to the Larkspur Creek trailhead sign with no note and no owner after two hours.", "label": "lost_and_found"}
+{"report": "Our parrot escaped his travel cage at the Blue Gate site, a grey bird with a red tail. Please let us know if you see it.", "label": "lost_and_found"}
+{"report": "Someone carved initials into the new Fernwood Loop interpretive sign.", "label": "facility_issue"}
+{"report": "Overflowing bear-proof bins at the Kettle Pass trailhead, trash is piled all around them.", "label": "facility_issue"}
+{"report": "What are the current stream crossing conditions on Larkspur Creek?", "label": "other"}
+{"report": "Does anyone know if the Hollow Rim overlook road is plowed yet?", "label": "other"}
+{"report": "Is there snow above Kettle Pass right now?", "label": "other"}
+{"report": "A bench at the Hollow Rim overlook has collapsed onto the path and its splintered legs stick out.", "label": "facility_issue"}
+{"report": "Loose bolts on the Tern Pond observation deck stairs, the whole staircase shakes under you.", "label": "facility_issue"}
+{"report": "Campers at Blue Gate ran a generator all night despite the posted quiet hours.", "label": "other"}
+{"report": "A porcupine settled under the Fernwood footbridge and will not move, people have to step around it on the narrow deck.", "label": "trail_hazard"}

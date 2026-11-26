@@ -22,12 +22,16 @@ def to_mustache(text: str) -> str:
     return text.replace("{report}", "{{report}}")
 
 
-def save_prompt_version(client: opik.Opik, system: str, change_description: str) -> opik.Prompt:
+def save_prompt_version(client: opik.Opik, system: str, metadata: dict) -> opik.Prompt:
     """Save a system+user chat prompt to the Opik prompt library.
 
     Saving text that differs from the latest version creates a NEW version of the
     same prompt, so the library shows the baseline and its optimized successors
     side by side under Prompt library > trail-report-classifier.
+
+    The scores travel in `metadata`, which shows on the version. The SDK accepts
+    change_description for chat prompts, but this stack stores None for it, so it
+    is not used here.
     """
     return client.create_chat_prompt(
         name=LIBRARY_PROMPT,
@@ -35,6 +39,6 @@ def save_prompt_version(client: opik.Opik, system: str, change_description: str)
             {"role": "system", "content": system},
             {"role": "user", "content": to_mustache(USER_TEMPLATE)},
         ],
-        change_description=change_description,
+        metadata=metadata,
         project_name=PROJECT_NAME,
     )

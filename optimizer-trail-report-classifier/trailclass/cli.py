@@ -26,7 +26,7 @@ def cmd_baseline(client: opik.Opik, _: argparse.Namespace) -> None:
 
     train, validation = _datasets(client)
     # Version 1 of the library prompt is the hand-written baseline.
-    save_prompt_version(client, BASELINE_SYSTEM, "Hand-written baseline (pre-optimization)")
+    save_prompt_version(client, BASELINE_SYSTEM, {"source": "hand-written baseline"})
     for name, dataset in (("train", train), ("validation", validation)):
         score = run_experiment(dataset, BASELINE_SYSTEM, f"baseline-{name}")
         print(f"baseline {name:<10} accuracy {score:.3f}")
@@ -58,14 +58,18 @@ def cmd_publish(client: opik.Opik, _: argparse.Namespace) -> None:
     base = run_experiment(validation, BASELINE_SYSTEM, "baseline-validation-recheck")
     win = run_experiment(validation, state["system"], "winner-validation")
     print(f"validation accuracy  baseline {base:.3f}  winner {win:.3f}  ({win - base:+.3f})")
-    if not should_publish(base, win):
-        print("Winner did not beat the baseline on held-out reports: nothing published.")
+    if not should_publish(BASELINE_SYSTEM, state["system"], base, win):
+        print("Winner did not clearly beat the baseline on held-out reports: nothing saved to the library.")
         return
     prompt = save_prompt_version(
         client,
         state["system"],
-        f"MetaPromptOptimizer winner: train {state['initial_score']:.3f} -> {state['score']:.3f}, "
-        f"validation {base:.3f} -> {win:.3f}",
+        {
+            "source": "HierarchicalReflectiveOptimizer winner",
+            "train_accuracy": f"{state['initial_score']:.3f} -> {state['score']:.3f}",
+            "validation_accuracy": f"{base:.3f} -> {win:.3f}",
+            "optimization_id": state["optimization_id"],
+        },
     )
     print(f"Saved as a new version of '{prompt.name}' in the prompt library.\n\nWinning system prompt:\n")
     print(state["system"])
@@ -79,6 +83,8 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("publish", help="check the winner on validation and save it to the prompt library").set_defaults(func=cmd_publish)
     args = parser.parse_args(argv)
     load_env()
+    # The client owns datasets, prompt-library saves and the optimization run; pinning
+    # project_name keeps all of them out of "Default Project".
     client = opik.Opik(project_name=PROJECT_NAME)
     try:
         args.func(client, args)
