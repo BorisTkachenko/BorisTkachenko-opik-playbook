@@ -13,6 +13,11 @@ done
 [[ -f .env ]] && { set -a; source .env; set +a; }
 : "${OPENAI_API_KEY:?Set OPENAI_API_KEY (see .env.example)}"
 
+# Point the OTLP exporter at the same Opik the SDKs use (OPIK_URL_OVERRIDE ends in /api/).
+if [[ -n "${OPIK_URL_OVERRIDE:-}" ]]; then
+  export OPIK_OTEL_ENDPOINT="${OPIK_OTEL_ENDPOINT:-${OPIK_URL_OVERRIDE%/}/v1/private/otel}"
+fi
+
 PORT="${PHARMACY_PORT:-5581}"
 export PHARMACY_PORT="$PORT"
 
