@@ -32,7 +32,7 @@ Now switch to the **Threads** tab. You'll find three threads: `rear-end-collisio
 
 1. `cd openai-agents-insurance-claims`
 2. `cp .env.example .env`, then set `OPENAI_API_KEY` (a `.env` in the parent folder also works).
-3. Point Opik at your instance: run `opik configure`, or set `OPIK_URL_OVERRIDE` / `OPIK_WORKSPACE` (and `OPIK_API_KEY` for Comet cloud) in `.env`.
+3. Point Opik at your instance: run `opik configure`, or set `OPIK_URL_OVERRIDE` / `OPIK_WORKSPACE` (and `OPIK_API_KEY` for Opik Cloud) in `.env`.
 4. `uv sync`
 5. `uv run main.py` (about 30 to 60 seconds, under a cent in model costs)
 6. Open the project in Opik and click the newest trace.

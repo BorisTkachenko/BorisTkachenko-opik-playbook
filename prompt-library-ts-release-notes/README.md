@@ -46,10 +46,10 @@ Under v1 every reply breaks all three rules: it opens with a rocket or a wave em
 
 ## Run it yourself
 
-You need Node 20+, an OpenAI key and a reachable Opik (local or Comet Cloud).
+You need Node 20+, an OpenAI key and a reachable Opik (local or Opik Cloud).
 
 1. `cd prompt-library-ts-release-notes`
-2. `cp .env.example .env` and fill in `OPENAI_API_KEY` plus your Opik settings (`OPIK_URL_OVERRIDE` and `OPIK_WORKSPACE` for a local stack, or `OPIK_API_KEY` for Comet Cloud). A `.env` in any parent folder is picked up too.
+2. `cp .env.example .env` and fill in `OPENAI_API_KEY` plus your Opik settings (`OPIK_URL_OVERRIDE` and `OPIK_WORKSPACE` for a local stack, or `OPIK_API_KEY` for Opik Cloud). A `.env` in any parent folder is picked up too.
 3. `npm install`
 4. `npm run demo` registers v1 and v2, writes one traced note, builds the suite and runs it once per version (about 30 seconds). It ends with a comparison table and a link per run.
 5. `npm run verify` reads everything back through the SDK: trace and span counts, cost, prompt versions, suite runs and the prompt linked to each. Pass an ISO timestamp (`npm run verify -- 2026-11-26T09:00:00Z`) to ignore older runs.
