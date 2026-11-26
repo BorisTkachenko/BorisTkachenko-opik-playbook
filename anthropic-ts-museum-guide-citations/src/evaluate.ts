@@ -32,8 +32,8 @@ const result = await runTests({
   model: MODEL, // the judge; no reasoning_effort override, which the judge call rejects
   taskThreads: 3,
   projectName: PROJECT_NAME,
-  experimentConfig: { model: MODEL },
-  experimentName: `guide-${new Date().toISOString().slice(0, 16)}`,
+  experimentConfig: { prompt: process.env["LAX_GUIDE"] === "1" ? "lax" : "strict", model: MODEL },
+  experimentName: `${process.env["LAX_GUIDE"] === "1" ? "lax-guide" : "guide"}-${new Date().toISOString().slice(0, 16)}`,
 });
 
 console.log(`\nPass rate: ${((result.passRate ?? 0) * 100).toFixed(0)}% (${result.itemsPassed}/${result.itemsTotal} items passed)`);
@@ -43,7 +43,7 @@ for (const item of result.itemResults.values()) {
   const output = String(first?.testCase.taskOutput["output"] ?? "");
   const local = verifyQuotes(output, NOTES);
   console.log(`  [${item.passed ? "PASS" : "FAIL"}] ${question}  (${item.runsPassed}/${item.runsTotal} runs, local quote check ${local.filter((q) => q.verbatim).length}/${local.length})`);
-  if (!item.passed) {
+  if (item.runsPassed < item.runsTotal) {
     for (const run of item.testResults)
       for (const s of run.scoreResults)
         if (s.scoringFailed || s.value !== 1) console.log(`         failed: ${s.name} — ${s.reason}`);

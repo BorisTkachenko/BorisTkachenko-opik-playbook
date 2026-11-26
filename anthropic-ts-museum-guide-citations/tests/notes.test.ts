@@ -13,6 +13,7 @@ describe("notes", () => {
     const prompt = buildSystemPrompt(notes);
     expect(prompt).toContain("<quote>");
     expect(prompt).toContain(notes.slice(0, 40));
+    expect(buildSystemPrompt(notes, true)).not.toContain("<quote>");
   });
 
   it("extracts quotes, including multi-line ones", () => {

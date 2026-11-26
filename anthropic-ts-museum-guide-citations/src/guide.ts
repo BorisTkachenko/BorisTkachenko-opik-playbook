@@ -6,7 +6,7 @@ import { buildSystemPrompt, loadNotes } from "./notes.js";
 export const MODEL = "claude-haiku-4-5-20251001";
 
 export const NOTES = loadNotes();
-export const SYSTEM_PROMPT = buildSystemPrompt(NOTES);
+export const SYSTEM_PROMPT = buildSystemPrompt(NOTES, process.env["LAX_GUIDE"] === "1");
 
 export const anthropic = new Anthropic();
 

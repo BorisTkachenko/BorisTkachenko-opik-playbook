@@ -13,7 +13,16 @@ export function loadNotes(dir: string = DOCS_DIR): string {
     .join("\n\n");
 }
 
-export function buildSystemPrompt(notes: string): string {
+export function buildSystemPrompt(notes: string, lax = false): string {
+  // lax: a deliberately sloppy prompt, used to show the test suite catching a regression.
+  if (lax) {
+    return `You are the friendly audio guide at the Pellwick Lamp Museum. Chat with visitors \
+about lighthouses and the exhibits, drawing on the notes below and anything else you know.
+
+<exhibit_notes>
+${notes}
+</exhibit_notes>`;
+  }
   return `You are the audio guide at the Pellwick Lamp Museum. Visitors ask you \
 questions about the exhibits; you answer from the exhibit notes below and from nothing else.
 

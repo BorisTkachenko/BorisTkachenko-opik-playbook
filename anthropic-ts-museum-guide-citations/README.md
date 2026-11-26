@@ -57,6 +57,13 @@ each item 3 times and passes it if 2 runs pass. In the run named `guide-2026-11-
 (the timestamp in the name is when the run started) all seven items passed, 3 of 3 runs
 each, and every assertion averaged 1.0 across 21 samples.
 
+**A run that should fail.** `npm run suite:lax` swaps in a deliberately sloppy prompt (no
+citation rule, outside knowledge allowed) and records an experiment named `lax-guide-…`. The
+same suite then has teeth: in `lax-guide-2026-11-26T09:13`, only 5 of 7 items passed (71%). "Why was
+the great lens made in Paris?" and "Which watch did the principal keeper take, and why?" each passed
+just 1 of 3 runs. The judge's reason on the failed runs names the uncited claims: outside knowledge
+about Fresnel lenses and France on the first, an embellishment not in Placard 3.1 on the second.
+
 **Inside one run.** Each sample is an `evaluation_task` trace. Its tree shows `llm_task` →
 `answer_question` → `anthropic.messages.create` (the guide, about $0.0024) next to
 `llm_judge` → `model.generateText` (the judge's grading of every assertion, about $0.005).
@@ -73,11 +80,13 @@ prompt and answer that earned it.
    set `OPIK_URL_OVERRIDE=https://www.comet.com/opik/api`, `OPIK_API_KEY`, `OPIK_WORKSPACE`.
 4. Three traced questions: `npm run demo` (about 5 s, under a cent).
 5. The test suite: `npm run suite` (about a minute, roughly 15 cents: 21 guide answers plus
-   the judge grading them).
+   the judge grading them). Add the failing prompt with `npm run suite:lax`.
 6. Offline tests, no keys and no Opik: `OPIK_TRACK_DISABLE=true npm test`
 
 ## Poke around
 
+- Compare `npm run suite` with `npm run suite:lax` in the experiment list, and open a failed
+  lax sample to read the judge's reason next to the trace.
 - Delete the sentence "If the notes do not cover the question, say plainly that you do not
   know" from the prompt in `src/notes.ts` and re-run the suite. Watch the cafe and architect
   items.
@@ -99,6 +108,22 @@ process.env["OPIK_PROJECT_NAME"] = PROJECT_NAME;                  // read by the
 export const guide = track({ name: "answer_question", type: "general", projectName: PROJECT_NAME }, fn);
 ```
 
+**Symptom: the lax prompt, which writes no `<quote>` tags at all, passed 7 of 7 items.**
+One lax run did exactly that while building this example. The assertion "every excerpt in
+`<quote>` tags appears verbatim" is vacuously true when there are none, and the judge's verdicts
+on the other assertions vary from run to run (the same prompt scored 71% on another run).
+Fix: keep the assertion that every claim *is backed by* a quote, run each item three
+times with a 2-of-3 threshold, and print the failed assertions of any run that fell short
+even when the item passed, so wobble is visible instead of hidden:
+
+```ts
+globalExecutionPolicy: { runsPerItem: 3, passThreshold: 2 },
+// evaluate.ts
+if (item.runsPassed < item.runsTotal) { /* print each failed assertion and its reason */ }
+```
+
+The local `verifyQuotes` count in the output (`0/0` for the lax guide) is the quick tell.
+
 ## How it's put together
 
 - `docs/` six fictional galleries of placards (about 1,700 tokens in total).
@@ -108,6 +133,7 @@ export const guide = track({ name: "answer_question", type: "general", projectNa
 - `src/suite.ts` the questions, the plain-English assertions and the item builder.
 - `src/evaluate.ts` creates the test suite and runs it with the judge.
 - `src/main.ts` three traced demo questions; `src/questions.ts` holds them.
+- `LAX_GUIDE=1` (set by `suite:lax`) switches `src/notes.ts` to the sloppy prompt.
 - `tests/` offline vitest: quote parsing and verification, the suite definition, and a traced
   call against a stubbed Anthropic client with tracking disabled.
 
