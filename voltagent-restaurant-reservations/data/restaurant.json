@@ -1,0 +1,32 @@
+{
+  "name": "Saltmarsh Kitchen",
+  "service": { "open": "17:00", "last_seating": "21:00", "stay_minutes": 90, "slot_minutes": 30 },
+  "tables": [
+    { "id": "T1", "seats": 2 },
+    { "id": "T2", "seats": 2 },
+    { "id": "T3", "seats": 4 },
+    { "id": "T4", "seats": 4 },
+    { "id": "T5", "seats": 6 },
+    { "id": "T6", "seats": 8 }
+  ],
+  "bookings": [
+    { "id": "BK-1001", "name": "Okafor", "date": "2026-12-05", "time": "19:00", "party_size": 2, "table_id": "T1" },
+    { "id": "BK-1002", "name": "Lindqvist", "date": "2026-12-05", "time": "19:30", "party_size": 4, "table_id": "T3" },
+    { "id": "BK-1003", "name": "Haddad", "date": "2026-12-05", "time": "19:00", "party_size": 4, "table_id": "T4" },
+    { "id": "BK-1004", "name": "Brennan", "date": "2026-12-05", "time": "19:00", "party_size": 6, "table_id": "T5" },
+    { "id": "BK-1005", "name": "Mbeki", "date": "2026-12-05", "time": "19:30", "party_size": 8, "table_id": "T6" },
+    { "id": "BK-1006", "name": "Tanaka", "date": "2026-12-05", "time": "19:00", "party_size": 2, "table_id": "T2" },
+    { "id": "BK-1007", "name": "Varga", "date": "2026-12-06", "time": "18:00", "party_size": 2, "table_id": "T1" }
+  ],
+  "menu": [
+    { "item": "Charred leek with hazelnut romesco", "course": "starter", "price_usd": 12, "dietary": ["vegan", "gluten-free", "dairy-free"] },
+    { "item": "Beetroot tartare with cashew cream", "course": "starter", "price_usd": 13, "dietary": ["vegan", "gluten-free"] },
+    { "item": "Smoked haddock chowder", "course": "starter", "price_usd": 14, "dietary": ["gluten-free"] },
+    { "item": "Wild mushroom risotto", "course": "main", "price_usd": 24, "dietary": ["vegetarian", "gluten-free"] },
+    { "item": "Roast cauliflower steak with tahini", "course": "main", "price_usd": 22, "dietary": ["vegan", "gluten-free", "dairy-free"] },
+    { "item": "Pan-roasted sea bass with samphire", "course": "main", "price_usd": 31, "dietary": ["gluten-free", "dairy-free"] },
+    { "item": "Slow-braised lamb shoulder", "course": "main", "price_usd": 33, "dietary": ["dairy-free"] },
+    { "item": "Dark chocolate pot with sea salt", "course": "dessert", "price_usd": 10, "dietary": ["vegetarian", "gluten-free"] },
+    { "item": "Poached pear with oat crumble", "course": "dessert", "price_usd": 10, "dietary": ["vegan", "dairy-free"] }
+  ]
+}
