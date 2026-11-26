@@ -7,13 +7,14 @@ import { OpikSpanType, opik, traceActivityAttempt } from './tracing';
 import type { CdnUpload, EpisodeInput, ShowNotes } from './shared';
 
 const MODEL = 'gpt-4o-mini';
-const openai = new OpenAI();
+let openaiClient: OpenAI | undefined;
+const getOpenAI = () => (openaiClient ??= new OpenAI()); // lazy: importing this module needs no API key
 
 async function chat(name: string, parent: Span | undefined, system: string, user: string, json = false): Promise<string> {
   // trackOpenAI wraps the client: each completion becomes an llm-style child of
   // the activity span, with prompt, response, token usage and cost. Without a
   // parent it would start a separate trace per call.
-  const client = parent ? trackOpenAI(openai, { client: opik, parent, generationName: name }) : openai;
+  const client = parent ? trackOpenAI(getOpenAI(), { client: opik, parent, generationName: name }) : getOpenAI();
   const response = await client.chat.completions.create({
     model: MODEL,
     messages: [
@@ -64,6 +65,12 @@ const FAILING_ATTEMPTS: Record<string, { count: number; message: string }> = {
   ep41: { count: 2, message: 'CDN edge returned 503 Service Unavailable (upload part 3 of 4)' },
   ep42: { count: 1, message: 'CDN upload failed: connection reset by peer' },
 };
+
+/** The deliberate outage: does this attempt of this episode's upload fail, and with what? */
+export function simulatedCdnFailure(episodeId: string, attempt: number): string | undefined {
+  const flaky = FAILING_ATTEMPTS[episodeId];
+  return flaky && attempt <= flaky.count ? flaky.message : undefined;
+}
 
 export async function uploadToCdn(episode: EpisodeInput, notes: ShowNotes, blurb: string): Promise<CdnUpload> {
   // A tool span per attempt: the failing attempts end with their error, the retry that works follows.

@@ -81,6 +81,9 @@ async function main() {
       }
       startSpan.update({ output: { workflowId: handle.workflowId, cdn: result.cdn }, endTime: new Date() });
       trace.update({ output: { cdn: result.cdn, blurb: result.socialBlurb }, endTime: new Date() });
+      // A feedback score on the trace: shows up as a column in the traces table,
+      // so episodes that needed retries can be sorted and filtered.
+      trace.score({ name: 'cdn_upload_attempts', value: result.cdn.attempt, reason: 'Temporal attempt on which the CDN upload succeeded' });
       console.log(`Summary: ${result.showNotes.summary}`);
       console.log(`Chapters: ${result.showNotes.chapters.map((c) => `${c.timestamp} ${c.title}`).join(' | ')}`);
       console.log(`Blurb: ${result.socialBlurb}`);
