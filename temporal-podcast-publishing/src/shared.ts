@@ -1,9 +1,16 @@
 export const TASK_QUEUE = 'podcast-publishing';
 
+/** Where in an Opik trace the worker should attach its spans (created by the starter). */
+export interface TraceLink {
+  traceId: string;
+  parentSpanId: string;
+}
+
 export interface EpisodeInput {
   episodeId: string; // e.g. "ep41"
   title: string;
   transcript: string; // full text of the episode transcript
+  trace?: TraceLink; // set by the starter so the worker can join its trace
 }
 
 export interface ShowNotes {

@@ -10,6 +10,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { Client } from '@temporalio/client';
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { requireEnv } from './env';
+import { opik } from './tracing';
 import { TASK_QUEUE, type EpisodeInput } from './shared';
 import type { publishEpisode } from './workflows';
 
@@ -53,12 +54,33 @@ async function main() {
     for (const meta of EPISODES) {
       const episode = loadEpisode(meta);
       console.log(`\n=== ${episode.episodeId}: ${episode.title}`);
+      // The starter owns the trace: one trace per episode, with one span that
+      // covers "start the workflow and wait". The worker's spans nest under it.
+      const trace = opik.trace({
+        name: `publish-episode:${episode.episodeId}`,
+        input: { episodeId: episode.episodeId, title: episode.title, transcriptChars: episode.transcript.length },
+        tags: ['temporal'],
+        metadata: { process: { role: 'starter', pid: process.pid } },
+      });
+      const startSpan = trace.span({ name: 'temporal:publishEpisode', type: 'general', input: { taskQueue: TASK_QUEUE } });
+      // These two ids are all the worker needs to join the trace; they ride along in the workflow input.
+      episode.trace = { traceId: trace.data.id, parentSpanId: startSpan.data.id };
       const handle = await client.workflow.start<typeof publishEpisode>('publishEpisode', {
         taskQueue: TASK_QUEUE,
         workflowId: `publish-${episode.episodeId}-${Date.now()}`,
         args: [episode],
       });
-      const result = await handle.result();
+      let result;
+      try {
+        result = await handle.result();
+      } catch (err) {
+        const e = err as Error;
+        startSpan.update({ errorInfo: { exceptionType: e.name, message: e.message, traceback: e.stack ?? '' }, endTime: new Date() });
+        trace.update({ endTime: new Date() });
+        throw err;
+      }
+      startSpan.update({ output: { workflowId: handle.workflowId, cdn: result.cdn }, endTime: new Date() });
+      trace.update({ output: { cdn: result.cdn, blurb: result.socialBlurb }, endTime: new Date() });
       console.log(`Summary: ${result.showNotes.summary}`);
       console.log(`Chapters: ${result.showNotes.chapters.map((c) => `${c.timestamp} ${c.title}`).join(' | ')}`);
       console.log(`Blurb: ${result.socialBlurb}`);
@@ -69,6 +91,7 @@ async function main() {
     worker.kill('SIGINT');
     await new Promise((resolve) => worker.once('exit', resolve));
     await env.teardown();
+    await opik.flush(); // send the starter's spans; the worker flushes its own on exit
   }
 }
 

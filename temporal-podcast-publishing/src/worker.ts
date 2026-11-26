@@ -7,6 +7,7 @@ import './env';
 import { DefaultLogger, NativeConnection, Runtime, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 import { TASK_QUEUE } from './shared';
+import { opik } from './tracing';
 
 async function main() {
   // Keep the console readable: activity retries are reported by the activity itself.
@@ -22,6 +23,8 @@ async function main() {
   console.log(`WORKER_READY on ${address}, task queue "${TASK_QUEUE}"`);
   await worker.run(); // until SIGINT/SIGTERM
   await connection.close();
+  // Spans are batched in memory; flush on shutdown or the last attempts never reach Opik.
+  await opik.flush();
 }
 
 main().catch((err) => {

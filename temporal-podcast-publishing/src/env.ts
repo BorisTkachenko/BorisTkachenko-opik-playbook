@@ -12,6 +12,10 @@ dotenv.config({
 // example always talks to the public OpenAI API.
 delete process.env.OPENAI_BASE_URL;
 
+// Every Opik client in this example (starter and worker) must land in the same
+// project, and the TS SDK falls back to "Default Project" unless told otherwise.
+process.env.OPIK_PROJECT_NAME ??= 'temporal-podcast-publishing';
+
 export function requireEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Missing required environment variable: ${name}`);
