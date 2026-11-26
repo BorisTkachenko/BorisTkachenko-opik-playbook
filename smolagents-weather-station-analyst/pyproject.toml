@@ -5,6 +5,9 @@ description = "A smolagents CodeAgent that answers questions about weather-stati
 requires-python = ">=3.12"
 dependencies = [
     "openai>=1.0",
+    "openinference-instrumentation-smolagents>=0.1.53",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.2",
+    "opentelemetry-sdk>=1.45.2",
     "pandas>=2.2",
     "python-dotenv>=1.0",
     "smolagents>=1.20",
