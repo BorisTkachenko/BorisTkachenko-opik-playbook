@@ -7,6 +7,9 @@ import dotenv
 
 PROJECT_NAME = "optimizer-trail-report-classifier"
 MODEL = "gpt-4o-mini"
+# Every trace this app emits goes to this Opik project; without it they would
+# land in "Default Project". Set before opik is imported anywhere.
+os.environ["OPIK_PROJECT_NAME"] = PROJECT_NAME
 DATA_DIR = pathlib.Path(__file__).parents[1] / "data"
 
 LABELS = (

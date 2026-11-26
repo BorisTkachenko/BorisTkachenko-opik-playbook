@@ -2,6 +2,8 @@
 
 import argparse
 
+import opik
+
 from .config import load_env
 from .data import load_split
 from .prompts import BASELINE_SYSTEM
@@ -21,4 +23,9 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("baseline", help="score the starting prompt on train and validation").set_defaults(func=cmd_baseline)
     args = parser.parse_args(argv)
     load_env()
-    args.func(args)
+    try:
+        args.func(args)
+    finally:
+        # Traces are sent from a background thread; flush so a short-lived CLI
+        # run does not exit with spans still queued.
+        opik.flush_tracker()
