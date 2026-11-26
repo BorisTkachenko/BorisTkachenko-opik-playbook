@@ -1,0 +1,26 @@
+[
+  {
+    "id": "xylitol-gum",
+    "voice": "nova",
+    "expected_urgency": "emergency",
+    "script": "Hi, this is Marta Kowalski. Please call me back right now. My dog Biscuit got into my handbag about twenty minutes ago and ate most of a pack of sugar free gum. It says xylitol on the packet. He is drooling and he is wobbly on his feet. My number is 555-0142."
+  },
+  {
+    "id": "limping-cat",
+    "voice": "onyx",
+    "expected_urgency": "same-day",
+    "script": "Hello, Dev Patel here. My cat Juniper has been limping on her back left leg since last night. She is eating and using her litter box fine, but she will not put weight on it. Could someone see her today if there is a gap? You can reach me on 555-0177."
+  },
+  {
+    "id": "vaccine-booking",
+    "voice": "shimmer",
+    "expected_urgency": "routine",
+    "script": "Good morning, it's Ingrid Larsen. I'd like to book annual vaccinations for my two rabbits, Pepper and Clover. Any day next week works, mornings are best. Call me on 555-0119 whenever suits."
+  },
+  {
+    "id": "two-pets-mixed",
+    "voice": "echo",
+    "expected_urgency": "same-day",
+    "script": "Hi, this is Tomas Reyes. Two things. My beagle Waffles has had diarrhea three times since this morning, but he is still drinking and wagging his tail, so I would like him checked today. Also, my other dog Pickle needs her nail trim sometime this month, no rush on that one. My number is 555-0163."
+  }
+]

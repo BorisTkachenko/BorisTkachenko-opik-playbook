@@ -1,0 +1,10 @@
+# Generated at run time and regenerated on every run: TTS audio + transcripts.
+output/
+opik_test_suite_reports/
+
+.env
+.venv/
+__pycache__/
+*.pyc
+uv.lock
+.pytest_cache/
