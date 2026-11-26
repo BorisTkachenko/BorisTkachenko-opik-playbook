@@ -6,6 +6,9 @@ import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingMatch;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -28,10 +31,12 @@ public class KnowledgeBase {
     private final EmbeddingModel embeddingModel;
     private final InMemoryEmbeddingStore<TextSegment> store = new InMemoryEmbeddingStore<>();
     private final Path docsDir;
+    private final Tracer tracer;
 
-    public KnowledgeBase(EmbeddingModel embeddingModel,
+    public KnowledgeBase(EmbeddingModel embeddingModel, Tracer tracer,
                          @ConfigProperty(name = "pharmacy.docs-dir", defaultValue = "docs") String docsDir) {
         this.embeddingModel = embeddingModel;
+        this.tracer = tracer;
         this.docsDir = Path.of(docsDir);
     }
 
@@ -42,8 +47,17 @@ public class KnowledgeBase {
                 segments.addAll(split(file));
             }
         }
-        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
-        store.addAll(embeddings, segments);
+        // Startup indexing is not an HTTP request, so give it its own root span; otherwise the
+        // embeddings call would arrive in Opik as an anonymous "POST /embeddings" trace.
+        Span span = tracer.spanBuilder("index_leaflets").startSpan();
+        try (Scope ignored = span.makeCurrent()) {
+            span.setAttribute("input", "{\"docs_dir\": \"" + docsDir + "\"}");
+            List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
+            store.addAll(embeddings, segments);
+            span.setAttribute("output", "{\"sections_indexed\": " + segments.size() + "}");
+        } finally {
+            span.end();
+        }
         LOG.infof("Indexed %d leaflet sections from %s", segments.size(), docsDir);
     }
 
