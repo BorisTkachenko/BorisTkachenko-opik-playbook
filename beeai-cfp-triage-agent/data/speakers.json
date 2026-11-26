@@ -1,0 +1,20 @@
+[
+  { "id": "S-201", "name": "Wen Zhao", "affiliation": "Larkspur Cloud", "past_talks": [
+      { "year": 2024, "title": "Scheduling Batch Jobs Without Starving Services", "rating": 4.7 },
+      { "year": 2025, "title": "Cluster Autoscaling: Lessons from Three Outages", "rating": 4.8 } ],
+    "no_shows": 0, "code_of_conduct_flags": 0 },
+  { "id": "S-202", "name": "Amara Nwosu", "affiliation": "Independent", "past_talks": [], "no_shows": 0, "code_of_conduct_flags": 0 },
+  { "id": "S-203", "name": "Rafael Duarte", "affiliation": "Quillmark Labs", "past_talks": [
+      { "year": 2023, "title": "Vector Search at Small Scale", "rating": 3.6 } ],
+    "no_shows": 1, "code_of_conduct_flags": 0 },
+  { "id": "S-204", "name": "Sofie Lindqvist", "affiliation": "Fjordline Design", "past_talks": [
+      { "year": 2025, "title": "Focus Rings Are Not Optional", "rating": 4.9 } ],
+    "no_shows": 0, "code_of_conduct_flags": 0 },
+  { "id": "S-205", "name": "Kofi Mensah", "affiliation": "Brightwater Systems", "past_talks": [
+      { "year": 2024, "title": "Zero-Trust for Internal Dashboards", "rating": 3.1 },
+      { "year": 2025, "title": "Why Your Secrets Scanner Is Lying", "rating": 3.4 } ],
+    "no_shows": 2, "code_of_conduct_flags": 1 },
+  { "id": "S-206", "name": "Priyanka Das", "affiliation": "Larkspur Cloud", "past_talks": [
+      { "year": 2025, "title": "Evaluating Retrieval Pipelines the Boring Way", "rating": 4.5 } ],
+    "no_shows": 0, "code_of_conduct_flags": 0 }
+]

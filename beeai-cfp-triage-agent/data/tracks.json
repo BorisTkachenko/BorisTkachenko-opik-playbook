@@ -1,0 +1,75 @@
+[
+  {
+    "id": "platform",
+    "name": "Platform & Infrastructure",
+    "chair": "Ingrid Solheim",
+    "rubric": {
+      "keywords": ["kubernetes", "scheduler", "autoscaling", "cluster", "latency", "deploy", "observability", "capacity"],
+      "criteria": [
+        "Concrete production numbers or a measured before/after",
+        "A named failure mode and how it was found",
+        "Takeaways an operator can apply on Monday"
+      ]
+    },
+    "slots": [
+      { "slot": "Thu 10:00", "status": "taken", "proposal_id": "P-1002" },
+      { "slot": "Thu 11:30", "status": "taken", "proposal_id": "P-1008" },
+      { "slot": "Thu 14:00", "status": "open", "proposal_id": null },
+      { "slot": "Fri 09:30", "status": "taken", "proposal_id": null }
+    ]
+  },
+  {
+    "id": "ml",
+    "name": "Applied Machine Learning",
+    "chair": "Tobias Okafor",
+    "rubric": {
+      "keywords": ["model", "evaluation", "dataset", "retrieval", "embedding", "fine-tuning", "inference", "agents"],
+      "criteria": [
+        "Clear problem statement and baseline",
+        "Evaluation method that goes beyond anecdotes",
+        "Honest account of what did not work"
+      ]
+    },
+    "slots": [
+      { "slot": "Thu 10:00", "status": "taken", "proposal_id": null },
+      { "slot": "Thu 15:30", "status": "taken", "proposal_id": null },
+      { "slot": "Fri 11:00", "status": "taken", "proposal_id": null },
+      { "slot": "Fri 14:00", "status": "taken", "proposal_id": null }
+    ]
+  },
+  {
+    "id": "frontend",
+    "name": "Frontend & Design Systems",
+    "chair": "Lucía Marchetti",
+    "rubric": {
+      "keywords": ["component", "accessibility", "rendering", "bundle", "design", "state", "performance", "browser"],
+      "criteria": [
+        "A live demo or code the audience can reuse",
+        "Accessibility or performance data, not adjectives",
+        "A clear trade-off, not a framework sales pitch"
+      ]
+    },
+    "slots": [
+      { "slot": "Thu 13:00", "status": "open", "proposal_id": null },
+      { "slot": "Thu 16:30", "status": "open", "proposal_id": null },
+      { "slot": "Fri 10:00", "status": "taken", "proposal_id": null }
+    ]
+  },
+  {
+    "id": "security",
+    "name": "Security & Privacy",
+    "chair": "Hamid Rahimi",
+    "rubric": {
+      "keywords": ["threat", "vulnerability", "supply", "secrets", "authentication", "privacy", "incident", "audit"],
+      "criteria": [
+        "A real incident or reproducible attack path",
+        "Mitigations ranked by effort and payoff",
+        "Responsible disclosure handled"
+      ]
+    },
+    "slots": [
+      { "slot": "Thu 12:00", "status": "taken", "proposal_id": null },
+      { "slot": "Fri 13:00", "status": "taken", "proposal_id": null }
+    ]
+  }
+]
